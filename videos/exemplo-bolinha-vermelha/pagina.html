@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Exemplo — A bolinha vermelha</title>
+<!-- MODELO de vídeo animado (Reels 1080 x 1920) do Gerador de Vídeos: copie esta pasta para fazer o seu (ver SKILL gerador-de-video). Modo animado do motor: render(t) desenha o instante t
+     (depende SÓ de t). render(t < 0) desenha a CAPA do Instagram (camada #capa), para sair pelo próprio motor: --fotos=-1.
+     Personagem: o Lumi (SVG aqui mesmo) ou o SEU em PNG (PERSONAGEM no roteiro.py). Cachorro, gramado e bolinhas em SVG.
+     Marca e cores: MARCA no roteiro.py e as variáveis --fundo, --tinta, --destaque abaixo.
+     Visão do cachorro = filtro SVG #visaoCao (matriz de daltonismo deuteranópico, Machado 2009): simulação aproximada, rotulada na tela.
+     Câmera e fundo sempre em movimento (o QA reprova imagem parada acima de 1 s). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
+<style>
+  :root { --fundo: #74CCFF; --tinta: #13294B; --destaque: #FF6B4A; --verm: #E8322B; --bazul: #2F6FE0; --traco: #22160F; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--fundo); font-family: "Baloo 2", "Segoe UI", sans-serif; color: var(--tinta); -webkit-font-smoothing: antialiased; }
+  #palco { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(1000px 1000px at 50% 42%, #A6E0FF 0%, #74CCFF 55%, #49B4F2 100%); }
+  #pontos { position: absolute; left: -68px; top: -68px; width: 1216px; height: 2056px; z-index: 0;
+    background-image: radial-gradient(rgba(28,42,107,.09) 3.2px, transparent 3.8px); background-size: 34px 34px; }
+  #raios { position: absolute; left: 0; top: 0; z-index: 0; }
+  #cenas { position: absolute; inset: 0; z-index: 2; }
+  .cena { position: absolute; inset: 0; transform-origin: 540px 860px; }
+  .titulo { position: absolute; left: 20px; right: 20px; text-align: center; font-weight: 800; line-height: .92; letter-spacing: -1px; color: var(--tinta); white-space: nowrap; }
+  .cartao { position: absolute; border-radius: 44px; overflow: hidden; background: #fff;
+    box-shadow: 0 0 0 8px var(--tinta), 14px 18px 0 8px rgba(28,42,107,.22); }
+  .chip { display: inline-flex; align-items: center; gap: 12px; padding: 6px 26px 0; height: 64px; border-radius: 999px; font-weight: 800; font-size: 34px; white-space: nowrap; }
+  .chip.azul { background: var(--tinta); color: #fff; }
+  .chip.branco { background: #fff; color: var(--tinta); box-shadow: 0 0 0 5px var(--tinta); }
+  .chip.laranja { background: var(--destaque); color: #fff; box-shadow: 0 0 0 5px var(--tinta); }
+  .carimbo { position: relative; display: inline-block; padding: 12px 36px 0; border-radius: 24px; background: var(--verm); color: #fff; font-weight: 800; font-size: 88px; line-height: 1.05; white-space: nowrap;
+    box-shadow: 0 0 0 8px #fff, 0 0 0 15px var(--tinta), 14px 18px 0 15px rgba(28,42,107,.25); }
+  .sombra { text-shadow: 5px 6px 0 var(--tinta); }
+  .pers { position: absolute; }
+  .pers .corpo { position: absolute; inset: 0; transform-origin: 50% 100%; }
+  .pers img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+  .peca { position: absolute; }
+  .tag { position: absolute; padding: 6px 18px 2px; border-radius: 14px; background: rgba(28,42,107,.88); color: #fff; font-weight: 800; font-size: 28px; letter-spacing: .02em; white-space: nowrap; }
+  #marca { position: absolute; z-index: 5; left: 60px; top: 150px; display: flex; align-items: center; gap: 16px; padding: 8px 30px 8px 8px; border-radius: 999px;
+    background: var(--tinta); color: #fff; font-weight: 800; font-size: 36px; box-shadow: 8px 10px 0 rgba(28,42,107,.22); }
+  .av { display: inline-block; border-radius: 50%; overflow: hidden; background: #fff; }
+  #marca .av { width: 64px; height: 64px; box-shadow: 0 0 0 4px var(--fundo); }
+  #marca b { padding-top: 5px; font-weight: 800; }
+  #leg { position: absolute; z-index: 6; left: 0; right: 0; top: 1330px; height: 130px; }
+  #leg .bl { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+  #leg .caixa { display: inline-block; padding: 8px 30px 0; border-radius: 32px; background: var(--tinta); box-shadow: 10px 12px 0 rgba(28,42,107,.25); white-space: nowrap; }
+  #leg span { display: inline-block; margin: 0 .2em; font-size: 74px; font-weight: 800; color: #fff; line-height: 108px; text-transform: uppercase; }
+  #leg span.agora { color: var(--fundo); }
+  #fim { position: absolute; inset: 0; z-index: 7; opacity: 0; }
+  #capa { position: absolute; inset: 0; z-index: 9; display: none; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="visaoCao" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+      <feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/>
+    </filter>
+  </defs>
+</svg>
+<div id="palco">
+  <div id="pontos"></div>
+  <svg id="raios" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+  <div id="cenas"></div>
+  <div id="marca"><span class="av" id="marcaAv"></span><b id="marcaNome"></b></div>
+  <div id="leg"></div>
+  <div id="fim"></div>
+  <div id="capa"></div>
+</div>
+<script>
+"use strict";
+const NS = "http://www.w3.org/2000/svg";
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, p) => a + (b - a) * p;
+const easeOut = (p) => 1 - Math.pow(1 - clamp(p), 3);
+const easeIO = (p) => { p = clamp(p); return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; };
+const volta = (p) => { if (p <= 0) return 0; if (p >= 1) return 1; const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); };
+const frac = (x) => x - Math.floor(x);
+function sorte(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, ""); }
+function h(tag, estilo, html, pai, cls) { const e = document.createElement(tag); if (cls) e.className = cls; if (estilo) e.style.cssText = estilo;
+  if (html != null) e.innerHTML = html; if (pai) pai.appendChild(e); return e; }
+function svg(tag, at, pai) { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (pai) pai.appendChild(e); return e; }
+
+const L = "#22160F", AZUL = "#13294B", LARANJA = "#FF6B4A", VERM = "#E8322B", BAZUL = "#2F6FE0", VERDE = "#3DBA3A";
+const ZE_W = 941, ZE_H = 1672;   // tamanho das poses: PNG do seu personagem (PERSONAGEM no roteiro) ou o Lumi em SVG
+
+// ---- personagem padrão: o Lumi (uma lâmpada), desenhado aqui mesmo no tamanho das poses (941 x 1672). As mãos ficam nos mesmos
+// pontos que as cenas usam: palma direita do "apresentando" ~(850, 580), palma esquerda ~(90, 830). Poses: apresentando, apontando,
+// olha-so, pensando, rindo, surpreso. Para usar o SEU personagem: PNGs transparentes com esses nomes e as mãos nesses pontos.
+const LUMI = { camisa: "#FF6B4A", calca: "#13294B", vidro1: "#FFF8D2", vidro2: "#FFE066", rosca: "#B9C3CF", boca: "#7A1F2B" };
+const BRACOS = {   // [ombro, ponto de curva, mão, dedo?, ângulo do dedo]
+  apresentando: { d: [[595, 850], [770, 770], [850, 612]], e: [[345, 850], [180, 905], [95, 862]] },
+  apontando: { d: [[595, 850], [740, 700], [855, 585], 1, -8], e: [[345, 850], [240, 960], [300, 1050]] },
+  "olha-so": { d: [[595, 850], [820, 720], [760, 360], 1, -90], e: [[345, 850], [240, 960], [300, 1050]] },
+  pensando: { d: [[595, 850], [770, 830], [625, 705]], e: [[345, 850], [240, 960], [300, 1050]] },
+  rindo: { d: [[595, 850], [760, 700], [845, 565], 1, -15], e: [[345, 850], [300, 1010], [455, 1010]] },
+  surpreso: { d: [[595, 850], [890, 660], [790, 330]], e: [[345, 850], [50, 660], [150, 330]] },
+};
+let NL = 0;
+function desenharLumi(s, pose) {
+  const id = "lumi" + NL++, g = svg("g", { "stroke-linejoin": "round", "stroke-linecap": "round" }, s), sw = 14;
+  const rg = svg("radialGradient", { id, cx: 0.38, cy: 0.32, r: 0.75 }, svg("defs", {}, s));
+  svg("stop", { offset: 0, "stop-color": LUMI.vidro1 }, rg); svg("stop", { offset: 1, "stop-color": LUMI.vidro2 }, rg);
+  [[372, 452], [490, 570]].forEach(([a, b]) => svg("rect", { x: a, y: 1140, width: b - a, height: 400, rx: 38, fill: LUMI.calca, stroke: L, "stroke-width": sw }, g));
+  [[402, 1570], [550, 1570]].forEach(([cx, cy]) => { svg("ellipse", { cx, cy, rx: 94, ry: 48, fill: "#FFFFFF", stroke: L, "stroke-width": sw }, g);
+    svg("path", { d: `M${cx - 82} ${cy + 16} Q${cx} ${cy + 40} ${cx + 82} ${cy + 16}`, stroke: LUMI.camisa, "stroke-width": 14, fill: "none" }, g); });
+  svg("rect", { x: 312, y: 770, width: 316, height: 420, rx: 100, fill: LUMI.camisa, stroke: L, "stroke-width": sw }, g);
+  svg("path", { d: "M405 792 L470 858 L535 792", fill: "none", stroke: L, "stroke-width": 11 }, g);
+  svg("rect", { x: 368, y: 640, width: 204, height: 150, rx: 26, fill: LUMI.rosca, stroke: L, "stroke-width": sw }, g);
+  [684, 724, 764].forEach((y) => svg("line", { x1: 380, y1: y, x2: 560, y2: y, stroke: "#8793A1", "stroke-width": 10 }, g));
+  svg("circle", { cx: 470, cy: 390, r: 290, fill: `url(#${id})`, stroke: L, "stroke-width": sw }, g);
+  svg("path", { d: "M250 330 A230 230 0 0 1 380 160", stroke: "#FFFFFF", "stroke-width": 26, fill: "none", opacity: 0.85 }, g);
+  // rosto
+  const E = [[385, 400], [555, 400]];
+  if (pose === "rindo") E.forEach(([x, y]) => svg("path", { d: `M${x - 48} ${y + 12} Q${x} ${y - 50} ${x + 48} ${y + 12}`, stroke: L, "stroke-width": 16, fill: "none" }, g));
+  else { const k = pose === "surpreso" ? 1.18 : 1, [dx, dy] = ({ pensando: [14, -22], "olha-so": [12, -14], apontando: [16, 0], apresentando: [6, 4] })[pose] || [0, 0];
+    E.forEach(([x, y]) => { svg("ellipse", { cx: x, cy: y, rx: 54 * k, ry: 66 * k, fill: "#FFFFFF", stroke: L, "stroke-width": 11 }, g);
+      svg("circle", { cx: x + dx, cy: y + dy, r: pose === "surpreso" ? 20 : 27, fill: L }, g); svg("circle", { cx: x + dx + 9, cy: y + dy - 10, r: 8, fill: "#FFFFFF" }, g); }); }
+  const sb = ({ surpreso: -40, "olha-so": -14 })[pose] ?? 0;
+  E.forEach(([x, y], i) => { const lev = pose === "pensando" && i === 1 ? -26 : sb;
+    svg("path", { d: `M${x - 46} ${y - 94 + lev} Q${x} ${y - 120 + lev} ${x + 46} ${y - 94 + lev}`, stroke: L, "stroke-width": 14, fill: "none" }, g); });
+  if (pose === "surpreso") svg("ellipse", { cx: 470, cy: 560, rx: 44, ry: 56, fill: LUMI.boca, stroke: L, "stroke-width": 11 }, g);
+  else if (pose === "pensando") svg("path", { d: "M420 562 Q470 550 520 574", stroke: L, "stroke-width": 13, fill: "none" }, g);
+  else if (pose === "rindo") { svg("path", { d: "M360 500 Q470 520 580 500 Q570 640 470 640 Q370 640 360 500 Z", fill: LUMI.boca, stroke: L, "stroke-width": 11 }, g);
+    svg("path", { d: "M412 600 Q470 572 528 600 Q518 634 470 634 Q422 634 412 600 Z", fill: "#FF7B8A" }, g); }
+  else { svg("path", { d: "M380 520 Q470 540 560 520 Q545 610 470 612 Q395 610 380 520 Z", fill: LUMI.boca, stroke: L, "stroke-width": 11 }, g);
+    svg("path", { d: "M394 526 Q470 543 546 526 L542 548 Q470 561 398 548 Z", fill: "#FFFFFF" }, g); }
+  [[330, 505], [610, 505]].forEach(([x, y]) => svg("ellipse", { cx: x, cy: y, rx: 34, ry: 20, fill: "#FF8A7A", opacity: 0.5 }, g));
+  // braços (por cima do corpo: as mãos ficam na frente)
+  const b = BRACOS[pose] || BRACOS.apresentando;
+  [b.e, b.d].forEach(([s0, c, m, dedo, ang]) => { const d = `M${s0[0]} ${s0[1]} Q${c[0]} ${c[1]} ${m[0]} ${m[1]}`;
+    svg("path", { d, stroke: L, "stroke-width": 80, fill: "none" }, g); svg("path", { d, stroke: LUMI.camisa, "stroke-width": 54, fill: "none" }, g);
+    if (dedo) { const a = (ang * Math.PI) / 180, fx = m[0] + 80 * Math.cos(a), fy = m[1] + 80 * Math.sin(a);
+      svg("line", { x1: m[0], y1: m[1], x2: fx, y2: fy, stroke: L, "stroke-width": 46 }, g); svg("line", { x1: m[0], y1: m[1], x2: fx, y2: fy, stroke: "#FFFFFF", "stroke-width": 24 }, g); }
+    svg("circle", { cx: m[0], cy: m[1], r: 54, fill: "#FFFFFF", stroke: L, "stroke-width": 12 }, g); });
+}
+// avatar da marca (cartão final, capa, etiqueta do topo): imagem de MARCA["avatar"] ou a cabeça do Lumi
+function avatar(tam) { const m = DADOS.marca || {};
+  if (m.avatar) return `<img src="${m.avatar}" style="width:${tam}px; height:${tam}px; border-radius:50%; object-fit:cover; display:block">`;
+  return `<svg width="${tam}" height="${tam}" viewBox="0 0 200 200" style="display:block"><circle cx="100" cy="100" r="100" fill="#FFFFFF"/>
+    <rect x="74" y="140" width="52" height="34" rx="9" fill="${LUMI.rosca}" stroke="${L}" stroke-width="6"/>
+    <circle cx="100" cy="92" r="62" fill="${LUMI.vidro2}" stroke="${L}" stroke-width="7"/>
+    <ellipse cx="82" cy="86" rx="11" ry="14" fill="#fff" stroke="${L}" stroke-width="4"/><ellipse cx="118" cy="86" rx="11" ry="14" fill="#fff" stroke="${L}" stroke-width="4"/>
+    <circle cx="84" cy="88" r="6" fill="${L}"/><circle cx="120" cy="88" r="6" fill="${L}"/>
+    <path d="M78 110 Q100 128 122 110" stroke="${L}" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`; }
+const nomeMarca = () => String((DADOS.marca || {}).nome || "SEU CANAL").toUpperCase();
+// mesma matriz do filtro #visaoCao: cor que o cachorro "vê" (aproximação)
+const MAT = [0.367322, 0.860646, -0.227968, 0.280085, 0.672501, 0.047413, -0.011820, 0.042940, 0.968881];
+function visaoCao(hex) { const n = parseInt(hex.slice(1), 16), c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => v / 255);
+  return "#" + [0, 1, 2].map((i) => Math.round(255 * clamp(MAT[i * 3] * c[0] + MAT[i * 3 + 1] * c[1] + MAT[i * 3 + 2] * c[2])).toString(16).padStart(2, "0")).join(""); }
+
+let TL = null, C = {}, EVENTOS = [], A = [], CENAS = [], LEG = [], T = {}, IMGS = [], DADOS = {};
+function quando(nome, palavra, n = 1, fr = 0.5) { const c = C[nome]; if (!c) return 0; const alvo = norm(palavra); let k = 0;
+  for (const w of c.palavras) if (norm(w.w).startsWith(alvo) && ++k === n) return c.ini + w.t; return c.ini + fr * c.dur; }
+function som(t, nome, extra) { EVENTOS.push(Object.assign({ t: +Math.max(0, t).toFixed(3), som: nome }, extra || {})); }
+function anim(f) { A.push(f); }
+function entra(el, t0, o = {}) {
+  const d = o.dur ?? 0.45, dy = o.dy ?? 34, dx = o.dx ?? 0, s0 = o.s0 ?? 0.96, rot = o.rot ?? 0, ease = o.ease ?? easeOut, base = o.base || "";
+  anim((t) => { const p = clamp((t - t0) / d), e = ease(p);
+    el.style.opacity = p <= 0 ? "0" : Math.min(1, p * 1.8).toFixed(3);
+    el.style.transform = `${base} translate(${(dx * (1 - e)).toFixed(1)}px,${(dy * (1 - e)).toFixed(1)}px) scale(${(s0 + (1 - s0) * e).toFixed(4)}) rotate(${(rot * (1 - e)).toFixed(2)}deg)`; });
+  if (o.som) som(t0, o.som, { vol: o.vol ?? 0.45, nota: o.nota });
+}
+function sai(el, t1, d = 0.25) { anim((t) => { const q = clamp((t - t1) / d); if (q > 0) el.style.opacity = (parseFloat(el.style.opacity || 1) * (1 - q)).toFixed(3); }); }
+function camera(els, cx, cy, k) { const tr = `translate(${cx},${cy}) scale(${k.toFixed(4)}) translate(${-cx},${-cy})`; els.forEach((e) => e.setAttribute("transform", tr)); }
+
+// ======================================================================= peças
+// personagem: troca de pose num instante (com pulinho), respira e balança; "extra" segue o corpo (objetos na mão)
+function personagem(pai, x, y, alt, seq, o = {}) {
+  const w = alt * ZE_W / ZE_H, s = alt / ZE_H;
+  const caixa = h("div", `left:${x}px; top:${y}px; width:${w.toFixed(1)}px; height:${alt}px`, "", pai, "pers");
+  const corpo = h("div", "", "", caixa, "corpo"), imgs = {};
+  const P = DADOS.personagem || {};
+  seq.forEach(([, p]) => { if (imgs[p]) return;
+    if (P.pasta) { const im = h("img", "opacity:0", null, corpo); im.src = `${P.pasta}/${P.prefixo ?? ""}${p}.png`; imgs[p] = im; }
+    else { const s = svg("svg", { viewBox: `0 0 ${ZE_W} ${ZE_H}` }, corpo); s.style.cssText = "position:absolute; inset:0; width:100%; height:100%; opacity:0; overflow:visible";
+      desenharLumi(s, p); imgs[p] = s; } });
+  const extra = h("div", "position:absolute; inset:0", "", corpo), fase = o.fase ?? 0;
+  const atual = (t) => { let k = 0; seq.forEach(([t0], i) => { if (t >= t0) k = i; }); return k; };
+  anim((t) => { const k = atual(t);
+    for (const p in imgs) imgs[p].style.opacity = p === seq[k][1] ? "1" : "0";
+    const pulo = k > 0 ? Math.sin(Math.PI * clamp((t - seq[k][0]) / 0.3)) : 0, resp = Math.sin(t * 2.4 + fase);
+    corpo.style.transform = `translateY(${(-22 * pulo).toFixed(1)}px) rotate(${(1.4 * Math.sin(t * 1.15 + fase)).toFixed(2)}deg) scale(${(1 + 0.045 * pulo + 0.005 * resp).toFixed(4)}, ${(1 - 0.025 * pulo + 0.012 * resp).toFixed(4)})`; });
+  seq.forEach(([t0], i) => { if (i > 0) som(t0, "pop", { vol: 0.32 }); });
+  return { caixa, corpo, extra, s, w };
+}
+
+let NB = 0;
+function bola(pai, r, cor) {
+  const id = "cb" + NB++, g = svg("g", {}, pai);
+  const cp = svg("clipPath", { id }, svg("defs", {}, g)); svg("circle", { r }, cp);
+  const dentro = svg("g", { "clip-path": `url(#${id})` }, g);
+  const corpo = svg("circle", { r, fill: cor }, dentro);
+  svg("circle", { cx: r * 0.42, cy: r * 0.5, r: r * 1.05, fill: "rgba(0,0,0,.2)" }, dentro);
+  svg("path", { d: `M${-r},${-r * 0.15} C${-r * 0.35},${r * 0.45} ${r * 0.35},${-r * 0.6} ${r},${r * 0.05}`, stroke: "rgba(255,255,255,.5)", "stroke-width": r * 0.13, fill: "none" }, dentro);
+  svg("circle", { r, fill: "none", stroke: L, "stroke-width": Math.max(4, r * 0.11) }, g);
+  svg("ellipse", { cx: -r * 0.38, cy: -r * 0.42, rx: r * 0.24, ry: r * 0.15, fill: "rgba(255,255,255,.85)", transform: `rotate(-35 ${-r * 0.38} ${-r * 0.42})` }, g);
+  return { g, cor: (c) => corpo.setAttribute("fill", c) };
+}
+function bolaDiv(pai, cx, cy, r, cor) {
+  const m = r + 8, d = h("div", `position:absolute; left:${(cx - m).toFixed(1)}px; top:${(cy - m).toFixed(1)}px; width:${2 * m}px; height:${2 * m}px`, "", pai);
+  const s = svg("svg", { width: 2 * m, height: 2 * m, viewBox: `${-m} ${-m} ${2 * m} ${2 * m}` }, d);
+  return { d, b: bola(s, r, cor) };
+}
+function anel(pai, cx, cy, r, cor = LARANJA) { return svg("circle", { cx, cy, r, fill: "none", stroke: cor, "stroke-width": 10, "stroke-dasharray": "24 14", "stroke-linecap": "round", opacity: 0 }, pai); }
+function coracao(pai) { const g = svg("g", { opacity: 0 }, pai);
+  svg("path", { d: "M0,18 C-30,-4 -34,-26 -18,-34 C-8,-39 0,-32 0,-24 C0,-32 8,-39 18,-34 C34,-26 30,-4 0,18 Z", fill: "#FF4F6A", stroke: L, "stroke-width": 5, "stroke-linejoin": "round" }, g); return g; }
+
+// gramado: céu, nuvens, morro, arbustos, grama com folhas que balançam; "camadas" = grupos inseridos na profundidade y pedida
+let NJ = 0;
+function jardim(pai, w, hh, o = {}) {
+  const id = "j" + NJ++, r = sorte(o.seed ?? 7), hz = o.hz ?? Math.round(hh * 0.38), raizCena = pai.closest(".cena"), EL = o.escLam ?? 1;
+  const s = svg("svg", { width: w, height: hh, viewBox: `0 0 ${w} ${hh}` }, pai); s.style.cssText = "position:absolute; left:0; top:0";
+  const defs = svg("defs", {}, s);
+  const gc = svg("linearGradient", { id: id + "c", x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  svg("stop", { offset: 0, "stop-color": "#78C8F0" }, gc); svg("stop", { offset: 1, "stop-color": "#D2F0FB" }, gc);
+  const gg = svg("linearGradient", { id: id + "g", x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  svg("stop", { offset: 0, "stop-color": "#78C24C" }, gg); svg("stop", { offset: 1, "stop-color": "#4C982E" }, gg);
+  const cena = svg("g", {}, s);
+  svg("rect", { x: -400, y: -400, width: w + 800, height: hz + 400, fill: `url(#${id}c)` }, cena);
+  svg("circle", { cx: w * 0.84, cy: hz * 0.36, r: Math.max(10, Math.min(46, hz * 0.2)), fill: "#FFE873", stroke: L, "stroke-width": 5 }, cena);
+  const nuvens = [];
+  for (let i = 0; i < 3; i++) { const g = svg("g", {}, cena), k = 0.6 + r() * 0.5;
+    [[0, 0, 40], [38, -14, 32], [70, 4, 28], [-34, 8, 26]].forEach(([dx, dy, rr]) => svg("circle", { cx: dx * k, cy: dy * k, r: rr * k, fill: "#fff" }, g));
+    nuvens.push({ g, x: r() * (w + 260), y: hz * (0.2 + r() * 0.35), v: 10 + r() * 12 }); }
+  svg("path", { d: `M-400 ${hz + 10} Q ${w * 0.22} ${hz - hz * 0.3} ${w * 0.48} ${hz - 8} T ${w + 400} ${hz - 14} V ${hz + 60} H -400 Z`, fill: "#9AD46E", stroke: L, "stroke-width": 5 }, cena);
+  for (let x = -60; x < w + 80;) { const rr = 30 + r() * 24; svg("circle", { cx: x.toFixed(1), cy: hz + 4, r: rr.toFixed(1), fill: r() < 0.5 ? "#5FAE3C" : "#54A135", stroke: L, "stroke-width": 5 }, cena); x += rr * 1.5 + r() * 20; }
+  svg("rect", { x: -400, y: hz, width: w + 800, height: hh - hz + 400, fill: `url(#${id}g)` }, cena);
+  const vx = w / 2;
+  for (let i = -9; i < 9; i += 2) { const x0 = vx + i * w * 0.16, x1 = vx + (i + 1) * w * 0.16;
+    svg("polygon", { points: `${(vx + (x0 - vx) * 0.12).toFixed(1)},${hz} ${(vx + (x1 - vx) * 0.12).toFixed(1)},${hz} ${(vx + (x1 - vx) * 1.6).toFixed(1)},${hh + 300} ${(vx + (x0 - vx) * 1.6).toFixed(1)},${hh + 300}`, fill: "rgba(255,255,255,.07)" }, cena); }
+  svg("line", { x1: -400, y1: hz, x2: w + 400, y2: hz, stroke: L, "stroke-width": 5 }, cena);
+  const lam = [];
+  for (let i = 0; i < (o.laminas ?? 110); i++) { const y = hz + 14 + Math.pow(r(), 0.75) * (hh - hz + 30);
+    lam.push({ x: -20 + r() * (w + 40), y, e: EL * (0.55 + 1.7 * (y - hz) / (hh - hz)), cor: r() < 0.55 ? "#3E8925" : "#93D862", f: r() * 6.28 }); }
+  (o.tufos || []).forEach(([tx, ty, n]) => { for (let i = 0; i < n; i++) lam.push({ x: tx + (r() - 0.5) * 110, y: ty + r() * 18, e: (o.escTufo ?? 1) * (1.3 + r() * 0.7), cor: r() < 0.5 ? "#3E8925" : "#7CC94F", f: r() * 6.28 }); });
+  lam.sort((a, b) => a.y - b.y);
+  const cortes = (o.camadas || []).slice().sort((a, b) => a - b), camadas = [];
+  for (const l of lam) { while (camadas.length < cortes.length && l.y >= cortes[camadas.length]) camadas.push(svg("g", {}, cena));
+    l.g = svg("g", { transform: `translate(${l.x.toFixed(1)},${l.y.toFixed(1)})` }, cena);
+    l.b = svg("path", { d: "M-5,0 Q-3,-15 1,-30 Q3,-13 6,0 Z", fill: l.cor }, l.g); }
+  while (camadas.length < cortes.length) camadas.push(svg("g", {}, cena));
+  anim((t) => { if (raizCena && raizCena.style.visibility === "hidden") return;
+    for (const n of nuvens) n.g.setAttribute("transform", `translate(${((n.x + n.v * Math.abs(t)) % (w + 260) - 130).toFixed(1)},${n.y.toFixed(1)})`);
+    for (const l of lam) l.b.setAttribute("transform", `scale(${l.e.toFixed(2)}) rotate(${(7 * Math.sin(t * 1.7 + l.f + l.x * 0.004)).toFixed(1)})`); });
+  return { s, cena, camadas, hz };
+}
+
+// morrinho de grama (cena final e cartão final); y do topo do morro em cada x
+const yMorro = (x) => 1300 - 74 * Math.sin(Math.PI * clamp((x + 60) / 1200));
+function morro(pai, seed) {
+  const r = sorte(seed), g = svg("g", {}, pai);
+  svg("path", { d: "M-60 1300 C 240 1202, 840 1202, 1140 1300 L1140 1520 L-60 1520 Z", fill: "#6DBA43", stroke: L, "stroke-width": 7 }, g);
+  const ls = [];
+  for (let x = -10; x < 1090; x += 22 + r() * 16) { const gg = svg("g", { transform: `translate(${x.toFixed(1)},${(yMorro(x) + 6).toFixed(1)})` }, g);
+    ls.push({ b: svg("path", { d: "M-5,0 Q-3,-15 1,-30 Q3,-13 6,0 Z", fill: r() < 0.5 ? "#3E8925" : "#93D862" }, gg), e: 1 + r() * 0.8, f: r() * 6 }); }
+  anim((t) => ls.forEach((l) => l.b.setAttribute("transform", `scale(${l.e.toFixed(2)}) rotate(${(8 * Math.sin(t * 1.6 + l.f)).toFixed(1)})`)));
+  return g;
+}
+
+// cachorro (caramelo, coleira azul com plaquinha amarela), olhando para a direita, pés em y = 0
+function cachorro(pai) {
+  const C1 = "#E3A35A", C2 = "#C48140", CR = "#FBE3BF", OR = "#9A5D2A";
+  const raiz = svg("g", {}, pai);
+  svg("ellipse", { cx: 10, cy: 6, rx: 150, ry: 16, fill: "rgba(0,0,0,.2)" }, raiz);
+  const tronco = svg("g", {}, raiz), cauda = svg("g", {}, tronco);
+  const dC = "M-112,-124 C-150,-136 -168,-170 -154,-206";
+  svg("path", { d: dC, stroke: L, "stroke-width": 32, fill: "none", "stroke-linecap": "round" }, cauda);
+  svg("path", { d: dC, stroke: C1, "stroke-width": 19, fill: "none", "stroke-linecap": "round" }, cauda);
+  const perna = (x, cor) => { const g = svg("g", {}, tronco);
+    svg("rect", { x: -16, y: -14, width: 32, height: 98, rx: 16, fill: cor, stroke: L, "stroke-width": 6 }, g);
+    svg("ellipse", { cx: 8, cy: 82, rx: 24, ry: 14, fill: cor, stroke: L, "stroke-width": 6 }, g); return { g, x }; };
+  const P = [perna(-58, C2), perna(84, C2), perna(-88, C1), perna(54, C1)];   // longe trás, longe frente, perto trás, perto frente
+  svg("ellipse", { cx: 0, cy: -124, rx: 128, ry: 62, fill: C1, stroke: L, "stroke-width": 6 }, tronco);
+  svg("ellipse", { cx: 16, cy: -94, rx: 78, ry: 22, fill: CR }, tronco);
+  svg("ellipse", { cx: -54, cy: -142, rx: 40, ry: 25, fill: C2, opacity: 0.8 }, tronco);
+  svg("rect", { x: 84, y: -190, width: 30, height: 88, rx: 14, fill: AZUL, stroke: L, "stroke-width": 5, transform: "rotate(24 99 -146)" }, tronco);
+  svg("circle", { cx: 122, cy: -108, r: 12, fill: "#FFD21A", stroke: L, "stroke-width": 4 }, tronco);
+  const cab = svg("g", {}, tronco);
+  svg("circle", { r: 66, fill: C1, stroke: L, "stroke-width": 6 }, cab);
+  const lingua = svg("path", { d: "M58,40 Q58,84 76,82 Q92,80 88,40 Z", fill: "#F0697A", stroke: L, "stroke-width": 5 }, cab);
+  svg("ellipse", { cx: 58, cy: 22, rx: 48, ry: 33, fill: CR, stroke: L, "stroke-width": 6 }, cab);
+  svg("path", { d: "M54,40 Q72,54 94,40", stroke: L, "stroke-width": 5, fill: "none", "stroke-linecap": "round" }, cab);
+  svg("ellipse", { cx: 100, cy: 8, rx: 17, ry: 13, fill: L }, cab);
+  svg("ellipse", { cx: 95, cy: 3, rx: 6, ry: 3.5, fill: "#fff", opacity: 0.75 }, cab);
+  svg("ellipse", { cx: 14, cy: -16, rx: 15, ry: 18, fill: "#fff", stroke: L, "stroke-width": 4 }, cab);
+  const olho = svg("g", {}, cab);
+  svg("circle", { cx: 18, cy: -13, r: 9, fill: L }, olho); svg("circle", { cx: 21, cy: -17, r: 3.2, fill: "#fff" }, olho);
+  svg("path", { d: "M-4,-44 Q14,-56 32,-44", stroke: L, "stroke-width": 6, fill: "none", "stroke-linecap": "round" }, cab);
+  const orelha = svg("g", {}, cab);
+  svg("path", { d: "M-18,-56 C-66,-62 -84,-4 -64,42 C-52,66 -22,48 -16,10 Z", fill: OR, stroke: L, "stroke-width": 6, "stroke-linejoin": "round" }, orelha);
+  const perg = svg("g", { opacity: 0 }, pai);
+  svg("circle", { r: 46, fill: "#fff", stroke: AZUL, "stroke-width": 7 }, perg);
+  const tx = svg("text", { x: 0, y: 26, "text-anchor": "middle", "font-size": 76, "font-weight": 800, fill: AZUL, "font-family": "Baloo 2" }, perg); tx.textContent = "?";
+  function pose(p) {
+    const esc = p.esc ?? 1, face = p.face ?? 1, corre = p.corre ?? 0, f = p.fase ?? 0, t = p.t ?? 0;
+    const bob = -corre * 10 * Math.abs(Math.sin(f)) - (1 - corre) * 2 * Math.sin(t * 2.2) + (p.pulo ?? 0);
+    raiz.setAttribute("transform", `translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) scale(${(face * esc).toFixed(3)},${esc.toFixed(3)})`);
+    tronco.setAttribute("transform", `translate(0,${bob.toFixed(1)})`);
+    const fs = [0, Math.PI, Math.PI, 0];
+    P.forEach((pp, i) => pp.g.setAttribute("transform", `translate(${pp.x},-86) rotate(${(corre * 34 * Math.sin(f + fs[i])).toFixed(1)})`));
+    cauda.setAttribute("transform", `rotate(${(p.cauda ?? 10 * Math.sin(t * 8)).toFixed(1)} -112 -124)`);
+    cab.setAttribute("transform", `translate(120,-172) rotate(${(p.cabeca ?? 0).toFixed(1)})`);
+    orelha.setAttribute("transform", `rotate(${(corre * 16 * Math.sin(f + 1) + (p.orelha ?? 0)).toFixed(1)} -18 -52)`);
+    lingua.style.display = p.lingua ? "" : "none";
+    olho.setAttribute("transform", `translate(${(p.olhar ?? 0).toFixed(1)},0)`);
+    const pg = p.pergunta ?? 0; perg.setAttribute("opacity", pg > 0 ? 1 : 0);
+    perg.setAttribute("transform", `translate(${(p.x + face * esc * 130).toFixed(1)},${(p.y + esc * (bob - 300)).toFixed(1)}) scale(${(pg * esc * 1.25).toFixed(3)})`);
+    return { boca: [p.x + face * esc * 196, p.y + esc * (bob - 128)], cabeca: [p.x + face * esc * 120, p.y + esc * (bob - 172)] };
+  }
+  return { raiz, pose };
+}
+
+// ======================================================================= cenas
+// 1. O mistério: ação desde o 1º quadro. O cachorro entra correndo, passa pela bolinha, volta, fareja... e não acha.
+function cMisterio(r, c) {
+  const n = "misterio", tV = quando(n, "vermelha"), tF = quando(n, "frente"), tD = quando(n, "dele");
+  const zoom = h("div", "position:absolute; inset:0; transform-origin:866px 1186px", "", r);
+  const tit = h("div", "top:250px; font-size:96px", `POR QUE ELE<br>NÃO <span style="color:var(--verm)">VÊ?</span>`, zoom, "titulo");
+  const card = h("div", "left:60px; top:470px; width:960px; height:780px", "", zoom, "cartao");
+  const BX = 470, BY = 600, R0 = 46;
+  const j = jardim(card, 960, 780, { hz: 250, seed: 3, camadas: [560, BY + 10], tufos: [[BX, BY + 14, 16]] });
+  svg("ellipse", { cx: BX, cy: BY + R0 - 4, rx: R0, ry: 10, fill: "rgba(0,0,0,.25)" }, j.camadas[1]);
+  bola(j.camadas[1], R0, VERM).g.setAttribute("transform", `translate(${BX},${BY})`);
+  const cao = cachorro(j.camadas[0]), tP = 1.15, tVira = 1.3;
+  anim((t) => { const p = clamp(t / tP), x = lerp(40, 700, 1 - Math.pow(1 - p, 1.5)), corre = clamp((1 - p) / 0.22), vira = t >= tVira;
+    const fareja = vira ? clamp((t - tVira - 0.1) / 0.3) : 0;
+    cao.pose({ t, x, y: 565, esc: 1.0, face: vira ? -1 : 1, corre, fase: t * 2 * Math.PI * 3.2, cabeca: fareja * (16 + 8 * Math.sin(t * 7)),
+      olhar: vira ? 3 * Math.sin(t * 3) : 0, pergunta: volta(clamp((t - 1.8) / 0.35)), cauda: vira ? 8 * Math.sin(t * 4) : 14 * Math.sin(t * 12) }); });
+  som(0.05, "whoosh", { dur: 0.5, vol: 0.25 }); som(tVira, "tique", { vol: 0.35 }); som(1.8, "plim", { nota: 91, vol: 0.35 });
+  const ov = svg("svg", { width: 960, height: 780, viewBox: "0 0 960 780" }, card); ov.style.cssText = "position:absolute; left:0; top:0";
+  const og = svg("g", {}, ov), an = anel(og, BX, BY, 78);
+  anim((t) => { const k = 1 + 0.16 * easeIO((t - 0.5) / 1.0) + 0.08 * easeIO((t - tV) / 0.8); camera([j.cena, og], 520, 520, k);
+    const q = volta(clamp((t - tV) / 0.35)); an.setAttribute("opacity", q > 0 ? 1 : 0); an.setAttribute("r", Math.max(0.1, 78 * q).toFixed(1));
+    an.setAttribute("stroke-dashoffset", (-t * 40).toFixed(1)); });
+  som(tV, "tique", { vol: 0.45 });
+  const z = personagem(zoom, 650, 1010, 760, [[-10, "surpreso"]]);
+  entra(z.caixa, tV + 0.35, { dx: 220, dy: 140, s0: 0.6, ease: volta, dur: 0.5, som: "whoosh", vol: 0.3 });
+  const st = h("div", "left:0; right:0; top:285px; text-align:center", `<span class="carimbo" style="font-size:100px">ELE NÃO VIU?!</span>`, zoom, "peca");
+  entra(st, tF - 0.15, { dy: 0, s0: 1.9, ease: volta, base: "rotate(-5deg)", dur: 0.3, som: "carimbo", vol: 0.65 });
+  const tZ = tD + 0.02;                     // zoom no Zé termina antes da troca de cena
+  anim((t) => { const q = easeIO(clamp((t - tZ) / 0.38)); zoom.style.transform = q > 0 ? `scale(${(1 + 0.42 * q).toFixed(4)})` : "";
+    tit.style.opacity = (1 - clamp((t - tF + 0.2) / 0.15)).toFixed(3); tit.style.transform = `translateY(${(4 * Math.sin(t * 1.6)).toFixed(1)}px)`; });
+  som(tZ, "whoosh", { dur: 0.35, vol: 0.28 });
+}
+
+// 2. A surpresa (sem mudança de conteúdo)
+function cSurpresa(r, c) {
+  const n = "surpresa", tDi = quando(n, "distracao"), tPr = quando(n, "problema"), tCo = quando(n, "cores"), tDf = quando(n, "diferenciar");
+  const t1 = h("div", "top:250px; font-size:84px", `NÃO É <span style="position:relative; display:inline-block; color:var(--verm)">DISTRAÇÃO<span class="risco" style="position:absolute; left:-8px; top:40%; height:12px; width:0; background:var(--tinta); border-radius:6px"></span></span>`, r, "titulo");
+  entra(t1, c.ini - 0.2, { dy: 30, s0: 0.9, ease: volta });
+  const risco = t1.querySelector(".risco");
+  anim((t) => { const q = easeOut(clamp((t - tDi - 0.35) / 0.3)); risco.style.width = q <= 0 ? "0" : `calc(${(100 * q).toFixed(1)}% + 16px)`; });
+  som(tDi + 0.35, "risco", { vol: 0.6 });
+  const t2 = h("div", "top:345px; font-size:124px; color:var(--destaque)", "É A COR!", r, "titulo sombra");
+  entra(t2, tCo - 0.15, { dy: 30, s0: 0.5, ease: volta, som: "plim", nota: 86, vol: 0.45 });
+  const ov = svg("svg", { width: 1080, height: 1920, viewBox: "0 0 1080 1920" }, r); ov.style.cssText = "position:absolute; left:0; top:0; overflow:visible";
+  const defs = svg("defs", {}, ov), CX = 790, CY = 740, CR = 230;
+  const cp = svg("clipPath", { id: "clipZoom" }, defs); svg("circle", { cx: CX, cy: CY, r: CR }, cp);
+  const grupo = svg("g", {}, ov); grupo.style.transformBox = "fill-box"; grupo.style.transformOrigin = "center";
+  svg("circle", { cx: CX + 14, cy: CY + 18, r: CR + 8, fill: "rgba(28,42,107,.22)" }, grupo);
+  const dentro = svg("g", { "clip-path": "url(#clipZoom)" }, grupo);
+  svg("rect", { x: CX - CR, y: CY - CR, width: 2 * CR, height: 2 * CR, fill: "#9FDAF6" }, dentro);
+  svg("rect", { x: CX - CR, y: CY + 90, width: 2 * CR, height: CR, fill: "#6DB944" }, dentro);
+  const caoZ = cachorro(dentro); caoZ.raiz.id = "caoZoom";
+  const DX = 1094, DY = 1108, DE = 2.2, ex = DX - DE * 134, ey = DY - DE * 188;
+  anim((t) => caoZ.pose({ t, x: DX, y: DY, esc: DE, face: -1, cabeca: -3 + 4 * Math.sin(t * 1.4), cauda: 0, olhar: 2 * Math.sin(t * 0.9) }));
+  svg("circle", { cx: CX, cy: CY, r: CR, fill: "none", stroke: AZUL, "stroke-width": 12 }, grupo);
+  entra(grupo, tPr - 0.2, { dy: 60, s0: 0.6, ease: volta, som: "whoosh", vol: 0.3 });
+  const LR = 96, lupa = svg("g", {}, ov);
+  const cl = svg("circle", { r: LR }, svg("clipPath", { id: "clipLupa" }, defs));
+  const cabo = svg("rect", { width: 36, height: 160, rx: 18, fill: LARANJA, stroke: AZUL, "stroke-width": 8 }, lupa);
+  const fundoL = svg("circle", { r: LR, fill: "#9FDAF6" }, lupa);
+  const uso = svg("use", { href: "#caoZoom" }, svg("g", { "clip-path": "url(#clipLupa)" }, lupa));
+  const aro = svg("circle", { r: LR, fill: "rgba(255,255,255,.1)", stroke: AZUL, "stroke-width": 18 }, lupa);
+  const brilho = svg("path", { d: `M${-LR * 0.62},${-LR * 0.2} A${LR * 0.65},${LR * 0.65} 0 0 1 ${-LR * 0.2},${-LR * 0.62}`, stroke: "rgba(255,255,255,.85)", "stroke-width": 10, fill: "none", "stroke-linecap": "round" }, lupa);
+  anim((t) => { const p = easeOut(clamp((t - tCo + 0.35) / 0.55)), lx = lerp(1010, ex, p), ly = lerp(1160, ey, p) + 4 * Math.sin(t * 2.2);
+    lupa.style.opacity = t < tCo - 0.35 ? 0 : 1;
+    [fundoL, aro, cl].forEach((e) => { e.setAttribute("cx", lx.toFixed(1)); e.setAttribute("cy", ly.toFixed(1)); });
+    uso.setAttribute("transform", `translate(${lx.toFixed(1)},${ly.toFixed(1)}) scale(1.9) translate(${(-lx).toFixed(1)},${(-ly).toFixed(1)})`);
+    cabo.setAttribute("transform", `translate(${lx.toFixed(1)},${ly.toFixed(1)}) rotate(-45) translate(-18,${LR - 4})`);
+    brilho.setAttribute("transform", `translate(${lx.toFixed(1)},${ly.toFixed(1)})`); });
+  som(tCo - 0.3, "whoosh", { dur: 0.4, vol: 0.25 });
+  const z = personagem(r, -40, 560, 960, [[-10, "pensando"], [tPr - 0.1, "apresentando"]]);
+  entra(z.caixa, c.ini - 0.25, { dx: -120, dy: 0, s0: 0.9 });
+  const pr = 44, bm = bolaDiv(z.extra, 850 * z.s, 560 * z.s - pr * 0.85, pr, VERM);
+  anim((t) => { const q = volta(clamp((t - tPr) / 0.35)); bm.d.style.opacity = t < tPr ? "0" : "1";
+    bm.d.style.transform = `translateY(${(-6 * Math.abs(Math.sin(t * 3))).toFixed(1)}px) scale(${q.toFixed(3)})`; });
+  [[VERM, "?"], [VERDE, "?"], [BAZUL, "✓"], ["#FFD21A", "✓"]].forEach(([cor, m], i) => {
+    const x = 630 + i * 112, y = 1075, p = bolaDiv(r, x, y, 36, cor);
+    entra(p.d, tDf - 0.35 + i * 0.12, { dy: 30, s0: 0.3, ease: volta, som: "bolha", vol: 0.3 });
+    const mk = h("div", `left:${x + 12}px; top:${y - 72}px; width:54px; height:54px; border-radius:50%; background:#fff; box-shadow:0 0 0 5px ${AZUL}; text-align:center; font-weight:800; font-size:42px; line-height:60px; color:${m === "?" ? VERM : "#2E9B3E"}`, m, r, "peca");
+    entra(mk, tDf + 0.15 + i * 0.12, { dy: 10, s0: 0.2, ease: volta });
+    anim((t) => { p.d.style.translate = `0 ${(6 * Math.sin(t * 2.6 + i)).toFixed(1)}px`; mk.style.translate = p.d.style.translate; });
+  });
+}
+
+// 3. Células de cor: HUMANOS 3 × CÃES 2 (números grandes, pouco texto); as faixas mostram que o cão vê vários tons, não só duas cores
+function cExplicacao(r, c) {
+  const n = "explicacao", tT = quando(n, "tres"), tD = quando(n, "dois"), tAz = quando(n, "azul"), tAm = quando(n, "amarelo"),
+    tVe = quando(n, "vermelho"), tVd = quando(n, "verde"), tPa = quando(n, "parecidos");
+  const tit = h("div", "top:250px; font-size:104px", `CÉLULAS DE <span style="color:var(--destaque)">COR</span>`, r, "titulo");
+  entra(tit, c.ini - 0.2, { dy: 30, s0: 0.9, ease: volta });
+  const HUM = ["#8B2BE2", BAZUL, "#00B4D8", VERDE, "#FFE014", "#FF8A00", VERM];
+  const grad = (cs) => `linear-gradient(90deg, ${cs.join(", ")})`;
+  const linha = (top, rotulo, num, cores, barra, t0) => {
+    const k = h("div", `left:60px; top:${top}px; width:960px; height:330px`, "", r, "cartao");
+    h("div", "position:absolute; left:40px; top:28px", `<span class="chip azul" style="font-size:50px; height:84px; padding:10px 36px 0">${rotulo}</span>`, k);
+    const nu = h("div", "position:absolute; right:96px; top:26px; font-weight:800; font-size:280px; line-height:.8; color:var(--destaque)", String(num), k, "sombra");
+    const cones = cores.map((cor, i) => h("div", `position:absolute; left:${44 + i * 100}px; top:128px; width:74px; height:118px; border-radius:37px; border:7px solid ${L}; background:linear-gradient(90deg, rgba(255,255,255,.45) 0 26%, transparent 26%), ${cor}`, "", k));
+    h("div", `position:absolute; left:40px; right:40px; top:264px; height:46px; border-radius:23px; border:6px solid ${L}; background:${barra}`, "", k);
+    entra(k, t0 - 0.3, { dy: 60, s0: 0.92, ease: volta, som: "tique", vol: 0.45 });
+    entra(nu, t0 - 0.05, { dy: 0, s0: 0.2, ease: volta, som: "pop", vol: 0.4 });
+    cones.forEach((e, i) => entra(e, t0 + 0.05 + i * 0.13, { dy: 30, s0: 0.4, ease: volta, som: "bolha", vol: 0.25 }));
+    return { k, cones };
+  };
+  linha(430, "HUMANOS", 3, [VERM, VERDE, BAZUL], grad(HUM), tT);
+  const cao = linha(790, "CÃES", 2, [BAZUL, "#F2C230"], grad(HUM.map(visaoCao)), tD);
+  [[tAz, 40 + 880 / 6, 0], [tAm, 40 + 880 * 4 / 6, 1]].forEach(([t0, bx, ci]) => {
+    const an = h("div", `position:absolute; left:${(bx - 48).toFixed(1)}px; top:239px; width:96px; height:96px; border-radius:50%; border:8px solid var(--destaque); box-shadow:0 0 0 4px #fff, inset 0 0 0 4px #fff`, "", cao.k);
+    entra(an, t0 - 0.1, { dy: 0, s0: 0.2, ease: volta, som: "plim", nota: 84 + ci * 5, vol: 0.4 });
+    anim((t) => { const q = clamp((t - t0 + 0.1) / 0.5); cao.cones[ci].style.translate = `0 ${(-24 * Math.sin(Math.PI * q)).toFixed(1)}px`;
+      an.style.scale = (1 + 0.06 * Math.sin(t * 6)).toFixed(3); });
+  });
+  const k3 = h("div", "left:60px; top:1150px; width:960px; height:160px", "", r, "cartao");
+  const lA = h("div", "position:absolute; left:0; top:0; width:400px; height:160px", "", k3);
+  h("div", "position:absolute; left:40px; top:12px; font-weight:800; font-size:34px; color:#4A5080", "NÓS VEMOS", lA);
+  bolaDiv(lA, 84, 104, 40, VERM); bolaDiv(lA, 184, 104, 40, VERDE);
+  h("div", "position:absolute; left:268px; top:40px; font-weight:800; font-size:90px; line-height:1; color:var(--destaque)", "→", lA);
+  const lB = h("div", "position:absolute; left:400px; top:0; width:560px; height:160px", "", k3);
+  h("div", "position:absolute; left:30px; top:12px; font-weight:800; font-size:34px; color:#4A5080", "O CÃO VÊ", lB);
+  bolaDiv(lB, 68, 104, 40, visaoCao(VERM)); bolaDiv(lB, 184, 104, 40, visaoCao(VERDE));
+  h("div", "position:absolute; left:110px; top:70px; font-weight:800; font-size:52px; line-height:1; color:var(--tinta)", "≈", lB);
+  const qi = h("div", "position:absolute; left:240px; top:80px; font-weight:800; font-size:38px; line-height:1; white-space:nowrap; color:var(--destaque)", "quase iguais!", lB);
+  entra(k3, tVe - 0.3, { dy: 50, s0: 0.92, ease: volta, som: "tique", vol: 0.45 });
+  entra(lB, tVd + 0.05, { dx: 40, dy: 0, s0: 0.95, som: "whoosh", vol: 0.2 });
+  entra(qi, tPa - 0.1, { dy: 0, s0: 0.3, ease: volta, som: "plim", nota: 79, vol: 0.4 });
+}
+
+// 4. A demonstração principal: mesma cena aproximada, bolinha grande; o 2º quadro vira "olhos do cachorro" com uma varredura visível
+function cRevelacao(r, c) {
+  const n = "revelacao", tB = quando(n, "bolinha"), tA = quando(n, "agora"), tDe = quando(n, "dele"), tI = quando(n, "invisivel"), tQ = quando(n, "quase");
+  const tit = h("div", "top:250px; font-size:96px", `A MESMA <span style="color:var(--verm)">BOLINHA</span>`, r, "titulo");
+  entra(tit, c.ini - 0.2, { dy: 30, s0: 0.9, ease: volta });
+  const BX = 480, BY = 255, RB = 64;
+  const quadro = (pai, filtro) => { const box = h("div", "position:absolute; inset:0", "", pai);
+    // só a grama abaixo de ~70% da bolinha fica na frente dela: a bolinha aparece inteira, com a base no gramado
+    const j = jardim(box, 960, 430, { hz: 60, seed: 11, camadas: [BY + RB * 0.7], tufos: [[BX, BY + RB * 0.75, 14]], laminas: 120, escLam: 1.4, escTufo: 0.75 });
+    svg("ellipse", { cx: BX, cy: BY + RB - 6, rx: RB, ry: 13, fill: "rgba(0,0,0,.22)" }, j.camadas[0]);
+    bola(j.camadas[0], RB, VERM).g.setAttribute("transform", `translate(${BX},${BY})`);
+    if (filtro) j.s.style.filter = "url(#visaoCao)";
+    return { box, j }; };
+  const painel = (top) => { const k = h("div", `left:60px; top:${top}px; width:960px; height:430px`, "", r, "cartao"); return k; };
+  const k1 = painel(380), a1 = quadro(k1, false);
+  const ov1 = svg("svg", { width: 960, height: 430, viewBox: "0 0 960 430" }, k1); ov1.style.cssText = "position:absolute; left:0; top:0";
+  const og1 = svg("g", {}, ov1), an1 = anel(og1, BX, BY, 92);
+  h("div", "position:absolute; left:24px; top:22px", `<span class="chip azul">NOSSOS OLHOS</span>`, k1);
+  entra(k1, c.ini - 0.25, { dy: 60, s0: 0.94, ease: volta, som: "whoosh", vol: 0.25 });
+  const k2 = painel(850), a2 = quadro(k2, false), b2 = quadro(k2, true);
+  const linhaV = h("div", "position:absolute; top:0; bottom:0; left:0; width:14px; margin-left:-7px; background:#fff; box-shadow:0 0 0 5px var(--tinta), 0 0 30px 10px rgba(255,255,255,.7)", "", k2);
+  const ov2 = svg("svg", { width: 960, height: 430, viewBox: "0 0 960 430" }, k2); ov2.style.cssText = "position:absolute; left:0; top:0";
+  const og2 = svg("g", {}, ov2), an2 = anel(og2, BX, BY, 92);
+  const ch2 = h("div", "position:absolute; left:24px; bottom:20px", `<span class="chip laranja">OLHOS DO CACHORRO</span>`, k2);
+  const tg2 = h("div", "left:28px; bottom:100px", "SIMULAÇÃO APROXIMADA", k2, "tag");   // à esquerda: a direita embaixo é coberta pelos botões do Instagram
+  entra(k2, tA - 0.25, { dy: 60, s0: 0.94, ease: volta, som: "whoosh", vol: 0.25 });
+  const tW0 = tA + 0.15, tW1 = Math.max(tDe + 0.15, tW0 + 1.0);
+  som(tW0, "subida", { dur: tW1 - tW0, vol: 0.18 });
+  entra(ch2, tW0 + 0.4, { dy: 16, s0: 0.6, ease: volta, som: "tique", vol: 0.4 }); entra(tg2, tW0 + 0.6, { dy: 16, s0: 0.6, ease: volta });
+  som(tB, "tique", { vol: 0.4 }); som(tQ, "tique", { vol: 0.4 });
+  anim((t) => {
+    const p = easeIO(clamp((t - tW0) / (tW1 - tW0)));
+    b2.box.style.clipPath = `inset(0 ${(100 * (1 - p)).toFixed(2)}% 0 0)`;
+    linhaV.style.left = `${(960 * p).toFixed(1)}px`; linhaV.style.opacity = p > 0 && p < 1 ? 1 : 0;
+    const k = 1 + 0.05 * clamp((t - c.ini) / c.dur) + 0.24 * easeIO(clamp((t - tQ) / 1.1));
+    camera([a1.j.cena, og1], BX, BY, k); camera([a2.j.cena, b2.j.cena, og2], BX, BY, k);
+    [[an1, tB], [an2, tQ]].forEach(([a, t0]) => { const q = volta(clamp((t - t0) / 0.35)); a.setAttribute("opacity", q > 0 ? 1 : 0);
+      a.setAttribute("r", Math.max(0.1, 92 * q).toFixed(1)); a.setAttribute("stroke-dashoffset", (-t * 40).toFixed(1)); });
+  });
+  const st = h("div", "left:0; right:0; top:762px; text-align:center", `<span class="carimbo" style="font-size:78px">NÃO É INVISÍVEL!</span>`, r, "peca");
+  entra(st, tI - 0.2, { dy: 0, s0: 1.8, ease: volta, base: "rotate(-4deg)", dur: 0.32, som: "carimbo", vol: 0.6 });
+}
+
+// 5. A troca: na visão do cachorro, a vermelha vira azul e salta aos olhos; o cachorro (grande) vem e pega
+function cSolucao(r, c) {
+  const n = "solucao", tTr = quando(n, "troca"), tF = quando(n, "facil"), tAc = quando(n, "achar"), tFa = quando(n, "faro"), tMo = quando(n, "movimento");
+  const tit = h("div", "top:250px; font-size:110px", `TROCA A <span style="color:var(--bazul)">COR!</span>`, r, "titulo");
+  entra(tit, c.ini - 0.2, { dy: 30, s0: 0.9, ease: volta });
+  const k = h("div", "left:60px; top:390px; width:960px; height:740px", "", r, "cartao");
+  const BX = 380, BY = 560, RB = 52;
+  const j = jardim(k, 960, 740, { hz: 150, seed: 5, camadas: [520, BY + 10], laminas: 120, escLam: 1.3, tufos: [[BX, BY + 16, 12]] });
+  j.s.style.filter = "url(#visaoCao)";
+  const sb = svg("ellipse", { cx: BX, cy: BY + RB - 5, rx: RB, ry: 11, fill: "rgba(0,0,0,.25)" }, j.camadas[1]);
+  const b = bola(j.camadas[1], RB, VERM), cao = cachorro(j.camadas[0]);
+  const ov = svg("svg", { width: 960, height: 740, viewBox: "0 0 960 740" }, k); ov.style.cssText = "position:absolute; left:0; top:0; overflow:visible";
+  const an = anel(ov, BX, BY, 84), brilhos = svg("g", {}, ov);
+  for (let i = 0; i < 10; i++) { const a = i / 10 * 2 * Math.PI; svg("line", { x1: 0, y1: 0, x2: 0, y2: 0, stroke: "#fff", "stroke-width": 9, "stroke-linecap": "round", "data-a": a }, brilhos); }
+  h("div", "position:absolute; left:20px; top:20px", `<span class="chip laranja">OLHOS DO CACHORRO</span>`, k);
+  h("div", "right:20px; top:30px", "SIMULAÇÃO APROXIMADA", k, "tag");
+  entra(k, c.ini - 0.25, { dy: 60, s0: 0.94, ease: volta });
+  const tE = tF - 0.45, tP = tAc + 0.05, tPk = tP + 0.1, xs = BX + 1.15 * 196 + 4;
+  anim((t) => {
+    const q = clamp((t - tTr) / 0.5);                       // a troca: gira e muda de cor no meio
+    b.cor(q >= 0.5 ? BAZUL : VERM);
+    const p = clamp((t - tE) / (tP - tE)), x = lerp(1260, xs, 1 - Math.pow(1 - p, 1.6)), corre = t < tE ? 0 : clamp((1 - p) / 0.25);
+    const feliz = t > tPk + 0.2, pulo = feliz ? -16 * Math.abs(Math.sin((t - tPk) * 6)) : 0;
+    const o = cao.pose({ t, x, y: 525, esc: 1.15, face: -1, corre, fase: t * 2 * Math.PI * 3, cauda: feliz ? 24 * Math.sin(t * 16) : 10 * Math.sin(t * 9), pulo, olhar: 3 });
+    const qp = clamp((t - tPk) / 0.28), bx = lerp(BX, o.boca[0], qp), by = lerp(BY, o.boca[1], qp) - 80 * Math.sin(Math.PI * qp);
+    const hop = -60 * Math.sin(Math.PI * q);
+    b.g.setAttribute("transform", `translate(${bx.toFixed(1)},${(by + hop).toFixed(1)}) scale(${Math.max(0.06, Math.abs(Math.cos(Math.PI * q))).toFixed(3)},1)`);
+    sb.style.opacity = (1 - qp).toFixed(2);
+    const qa = clamp((t - c.ini + 0.1) / 0.35); an.setAttribute("opacity", qa > 0 && t < tPk ? 1 : 0); an.setAttribute("r", Math.max(0.1, 84 * volta(qa) * (1 + 0.05 * Math.sin(t * 6))).toFixed(1));
+    an.setAttribute("stroke", t >= tTr + 0.25 ? "#FFFFFF" : LARANJA); an.setAttribute("stroke-dashoffset", (-t * 40).toFixed(1));
+    const qb = clamp((t - tTr - 0.25) / 0.45), cx = BX, cy = BY + hop;
+    [...brilhos.children].forEach((l) => { const a = +l.getAttribute("data-a"), r0 = 70 + 70 * easeOut(qb), r1 = r0 + 40 * (1 - qb);
+      l.setAttribute("x1", (cx + r0 * Math.cos(a)).toFixed(1)); l.setAttribute("y1", (cy + r0 * Math.sin(a)).toFixed(1));
+      l.setAttribute("x2", (cx + r1 * Math.cos(a)).toFixed(1)); l.setAttribute("y2", (cy + r1 * Math.sin(a)).toFixed(1)); });
+    brilhos.setAttribute("opacity", qb > 0 && qb < 1 ? 1 : 0);
+  });
+  som(tTr, "whoosh", { dur: 0.3, vol: 0.2 }); som(tTr + 0.25, "plim", { nota: 88, vol: 0.5 }); som(tE, "whoosh", { dur: 0.5, vol: 0.22 });
+  som(tPk, "pop", { vol: 0.5 }); som(tPk + 0.15, "plim", { nota: 91, vol: 0.4 });
+  [["+ FARO 👃", 90, tFa], ["+ MOVIMENTO", 320, tMo]].forEach(([s, x, t0]) => {
+    const ch = h("div", `left:${x}px; top:1046px`, `<span class="chip branco">${s}</span>`, r, "peca");
+    entra(ch, t0 - 0.1, { dy: 20, s0: 0.5, ease: volta, som: "tique", vol: 0.4 }); });
+  const cmp = h("div", "left:60px; top:1162px; width:960px; height:146px", "", r, "cartao");
+  const metade = (x, cor, l1, l2, ok, t0) => { const m = h("div", `position:absolute; left:${x}px; top:0; width:480px; height:146px`, "", cmp);
+    bolaDiv(m, 78, 73, 44, cor);
+    h("div", "position:absolute; left:144px; top:26px; font-weight:800; font-size:36px; line-height:1.05; color:var(--tinta)", `${l1}<br><span style="color:${ok ? "#2E9B3E" : VERM}">${l2}</span>`, m);
+    entra(m, t0, { dy: 20, s0: 0.85, ease: volta, som: "tique", vol: 0.4 }); };
+  h("div", "position:absolute; left:478px; top:24px; width:4px; height:98px; background:#E3E5EE; border-radius:2px", "", cmp);
+  metade(0, visaoCao(VERM), "VERMELHA", "SE MISTURA", false, tF - 0.25);
+  metade(480, visaoCao(BAZUL), "AZUL", "SE DESTACA", true, tF);
+  entra(cmp, tF - 0.35, { dy: 40, s0: 0.92, ease: volta });
+}
+
+// 6. Conclusão: o cachorro devolve a bolinha azul para o personagem; personagem mostra as duas cores; "tá explicado" com o cachorro pulando
+function cFechamento(r, c) {
+  const n = "fechamento", tTa = quando(n, "talvez"), tOu = quando(n, "outra"), tEu = quando(n, "eu"), tEx = quando(n, "explicado");
+  const tA = h("div", "top:250px; font-size:96px", "ELE SE DISTRAIU?", r, "titulo");
+  entra(tA, c.ini - 0.2, { dy: 30, s0: 0.9, ease: volta }); sai(tA, tTa - 0.25);
+  const tB = h("div", "top:236px; font-size:76px", `SÓ PRECISA DE<br><span class="sombra" style="font-size:124px; color:var(--bazul)">OUTRA COR!</span>`, r, "titulo");
+  entra(tB, tTa - 0.1, { dy: 30, s0: 0.8, ease: volta, som: "plim", nota: 84, vol: 0.4 }); sai(tB, tEx - 0.2);
+  const st = h("div", "left:0; right:0; top:290px; text-align:center", `<span class="carimbo" style="background:var(--destaque)">TÁ EXPLICADO!</span>`, r, "peca");
+  entra(st, tEx - 0.1, { dy: 0, s0: 1.8, ease: volta, base: "rotate(-4deg)", dur: 0.32, som: "carimbo", vol: 0.6 });
+  const ov = svg("svg", { width: 1080, height: 1920, viewBox: "0 0 1080 1920" }, r); ov.style.cssText = "position:absolute; left:0; top:0; overflow:visible";
+  morro(ov, 21);
+  const cao = cachorro(ov), cor = coracao(ov);
+  const z = personagem(r, 20, 450, 830, [[-10, "pensando"], [tTa - 0.1, "apresentando"], [tEu - 0.05, "olha-so"], [tEx - 0.1, "rindo"]]);
+  entra(z.caixa, c.ini - 0.25, { dx: -80, dy: 0, s0: 0.92 });
+  const voo = svg("svg", { width: 1080, height: 1920, viewBox: "0 0 1080 1920" }, r); voo.style.cssText = "position:absolute; left:0; top:0; overflow:visible";
+  const pr = 42, bVoo = bola(voo, pr, BAZUL);
+  const ax = 850 * z.s, ay = 560 * z.s - pr * 0.85, palma = [20 + ax, 450 + ay];
+  const halo = h("div", `position:absolute; left:${(ax - 72).toFixed(1)}px; top:${(ay - 72).toFixed(1)}px; width:144px; height:144px; border-radius:50%; border:10px solid #fff; box-shadow:0 0 0 7px ${BAZUL}, inset 0 0 0 4px ${BAZUL}`, "", z.extra);
+  const bA = bolaDiv(z.extra, ax, ay, pr, BAZUL), bV = bolaDiv(z.extra, 90 * z.s, 812 * z.s - pr * 0.85, pr, VERM);
+  const tL = tTa - 0.05, tChega = tL + 0.5, xC = 880, yC = yMorro(880) + 8;
+  anim((t) => {
+    const lanca = clamp((t - tL + 0.15) / 0.3), feliz = t > tEx - 0.1;
+    const pulo = -34 * Math.sin(Math.PI * lanca) + (feliz ? -26 * Math.abs(Math.sin((t - tEx) * 7)) : 0);
+    const o = cao.pose({ t, x: xC, y: yC, esc: 1.0, face: -1, pulo, cabeca: -18 * Math.sin(Math.PI * lanca), lingua: t > tChega + 0.2,
+      cauda: (t > tChega ? 24 : 12) * Math.sin(t * (t > tChega ? 15 : 8)), olhar: 3 });
+    // bolinha: na boca do cachorro → voa até a mão do personagem
+    const qv = clamp((t - tL) / 0.5);
+    const bx = lerp(o.boca[0], palma[0], qv), by = lerp(o.boca[1], palma[1], qv) - 260 * Math.sin(Math.PI * qv);
+    bVoo.g.setAttribute("transform", `translate(${bx.toFixed(1)},${by.toFixed(1)}) rotate(${(-540 * qv).toFixed(1)})`);
+    bVoo.g.setAttribute("opacity", t < tChega ? 1 : 0);
+    const on = t >= tChega && t < tEu + 0.12, qo = clamp((t - tEu + 0.05) / 0.15);
+    bA.d.style.opacity = on ? 1 : 0; bA.d.style.transform = `translateY(${(-5 * Math.abs(Math.sin(t * 3))).toFixed(1)}px) scale(${(on ? 1 - qo : 0).toFixed(3)})`;
+    const qr = volta(clamp((t - tChega) / 0.3)); bV.d.style.opacity = on ? 1 : 0; bV.d.style.transform = `scale(${(on ? qr * (1 - qo) : 0).toFixed(3)})`;
+    const qh = clamp((t - tOu + 0.1) / 0.3); halo.style.opacity = on && qh > 0 ? (1 - qo).toFixed(3) : 0;
+    halo.style.transform = `scale(${(volta(qh) * (1 + 0.07 * Math.sin(t * 7))).toFixed(3)})`;
+    bV.d.style.filter = qh > 0 ? `saturate(${(1 - 0.6 * qh).toFixed(2)}) brightness(${(1 - 0.15 * qh).toFixed(2)})` : "none";
+    const qc = clamp((t - tOu) / 0.9); cor.setAttribute("opacity", qc > 0 && qc < 1 ? (1 - qc * qc).toFixed(2) : 0);
+    cor.setAttribute("transform", `translate(${o.cabeca[0].toFixed(1)},${(o.cabeca[1] - 110 - 90 * qc).toFixed(1)}) scale(${(1.2 * volta(clamp(qc * 3))).toFixed(3)})`);
+  });
+  som(tL, "whoosh", { dur: 0.45, vol: 0.25 }); som(tChega, "pop", { vol: 0.5 }); som(tOu, "plim", { nota: 88, vol: 0.4 }); som(tOu + 0.05, "bolha", { vol: 0.3 });
+}
+const MONTA = { misterio: cMisterio, surpresa: cSurpresa, explicacao: cExplicacao, revelacao: cRevelacao, solucao: cSolucao, fechamento: cFechamento };
+
+// ======================================================================= fundo, legenda, cartão final e capa
+function montarFundo() {
+  const s = document.getElementById("raios"); T.raios = svg("g", {}, s);
+  for (let i = 0; i < 18; i++) { const a0 = (i / 18) * 2 * Math.PI, a1 = a0 + Math.PI / 18;
+    svg("path", { d: `M540 900 L${(540 + 2200 * Math.cos(a0)).toFixed(1)} ${(900 + 2200 * Math.sin(a0)).toFixed(1)} L${(540 + 2200 * Math.cos(a1)).toFixed(1)} ${(900 + 2200 * Math.sin(a1)).toFixed(1)} Z`, fill: "rgba(255,255,255,.16)" }, T.raios); }
+  T.pontos = document.getElementById("pontos"); T.marca = document.getElementById("marca");
+}
+const COR_PALAVRA = { vermelha: "#FF6A5C", vermelho: "#FF6A5C", verde: "#8BE06A", azul: "#7DB3FF", amarelo: "#FFD21A", cores: "#FFB05C", cor: "#FFB05C" };
+function montarLegendas() {
+  const pai = document.getElementById("leg");
+  for (const c of TL.cenas) {
+    const toks = c.fala.split(/\s+/); let j = 0; const ws = [];
+    for (const p of c.palavras) { const n = norm(p.w); if (!n) continue;
+      let k = j; while (k < toks.length && k < j + 4 && norm(toks[k]) !== n && !norm(toks[k]).startsWith(n)) k++;
+      let s = p.w, quebra = false; if (k < toks.length && k < j + 4) { s = toks[k]; quebra = /[,.?!;:]$/.test(toks[k]); j = k + 1; }
+      ws.push({ t: c.ini + p.t, d: p.d, s: s.replace(/[,;:.]+$/, ""), n, quebra }); }
+    const blocos = []; let gr = []; const letras = (a) => a.reduce((s, x) => s + x.s.length + 1, 0);
+    ws.forEach((w, i) => { if (gr.length && letras(gr) + w.s.length > 16) { blocos.push(gr); gr = []; }   // bloco curto: não chega na coluna de botões
+      gr.push(w); const prox = ws[i + 1];
+      if (w.quebra) { blocos.push(gr); gr = []; return; }
+      if (gr.length >= 3 || letras(gr) > 15) { if (prox && prox.quebra && prox.s.length <= 5 && letras(gr) + prox.s.length < 19) return; blocos.push(gr); gr = []; } });
+    if (gr.length) blocos.push(gr);
+    blocos.forEach((b) => { const g = h("div", "opacity:0", "", pai, "bl"), cx = h("div", "", "", g, "caixa");
+      const spans = b.map((w) => { const sp = h("span", "", w.s, cx), cor = COR_PALAVRA[w.n]; if (cor) sp.style.color = cor; return { sp, w, cor }; });
+      const larg = cx.getBoundingClientRect().width;     // segurança: legenda nunca passa de 860 px (área livre dos botões do Instagram)
+      if (larg > 860) spans.forEach((s) => { s.sp.style.fontSize = `${(74 * 860 / larg).toFixed(1)}px`; });
+      const ult = b[b.length - 1]; LEG.push({ g, cx, spans, ini: b[0].t - 0.05, fimFala: ult.t + ult.d + 0.45, cena: c.cena }); });
+  }
+  LEG.forEach((b, i) => { const prox = LEG[i + 1]; b.fim = prox && prox.cena === b.cena ? prox.ini : Math.min(b.fimFala, C[b.cena].fim - 0.08); });
+}
+// cartão final curto: pergunta, nome do canal grande, personagem rindo e o cachorro com a bolinha azul
+function montarFim() {
+  const f = document.getElementById("fim");
+  const ov = svg("svg", { width: 1080, height: 1920, viewBox: "0 0 1080 1920" }, f); ov.style.cssText = "position:absolute; left:0; top:0; overflow:visible";
+  morro(ov, 33);
+  const cao = cachorro(ov), bc = bola(ov, 38, BAZUL);
+  anim((t) => { const o = cao.pose({ t, x: 250, y: yMorro(250) + 8, esc: 0.9, face: 1, pulo: -10 * Math.abs(Math.sin(t * 4)), cauda: 22 * Math.sin(t * 15), olhar: 2 });
+    bc.g.setAttribute("transform", `translate(${o.boca[0].toFixed(1)},${o.boca[1].toFixed(1)})`); });
+  const b1 = h("div", "position:absolute; left:0; right:0; top:280px; text-align:center; font-weight:800; line-height:.9; color:var(--tinta)",
+    `<div style="font-size:132px">Você sabia</div><div class="sombra" style="font-size:150px; color:var(--destaque)">disso? <span style="text-shadow:none">🐶</span></div>`, f);
+  const b2 = h("div", "position:absolute; left:70px; top:640px", `<span class="av" style="display:block; width:150px; height:150px; box-shadow:0 0 0 7px var(--tinta), 10px 12px 0 7px rgba(28,42,107,.22)">${avatar(150)}</span>`, f);
+  const b3 = h("div", "position:absolute; left:70px; top:822px; font-weight:800; font-size:96px; line-height:.92; color:var(--tinta)", nomeMarca().replace(" ", "<br>"), f);
+  T.persFim = personagem(f, 570, 620, 900, [[-10, "rindo"]], { fase: 2 });
+  T.fimBlocos = [b1, b2, b3];
+}
+// capa do Instagram (render com t < 0): título grande, cachorro farejando bem ao lado da bolinha vermelha, personagem surpreso
+function montarCapa() {
+  const k = document.getElementById("capa");
+  h("div", "position:absolute; inset:0; background:radial-gradient(1000px 1000px at 50% 42%, #A6E0FF 0%, #74CCFF 55%, #49B4F2 100%)", "", k);
+  const rs = svg("svg", { width: 1080, height: 1920, viewBox: "0 0 1080 1920" }, k); rs.style.cssText = "position:absolute; left:0; top:0";
+  for (let i = 0; i < 18; i++) { const a0 = (i / 18) * 2 * Math.PI + 0.1, a1 = a0 + Math.PI / 18;
+    svg("path", { d: `M540 1000 L${(540 + 2200 * Math.cos(a0)).toFixed(1)} ${(1000 + 2200 * Math.sin(a0)).toFixed(1)} L${(540 + 2200 * Math.cos(a1)).toFixed(1)} ${(1000 + 2200 * Math.sin(a1)).toFixed(1)} Z`, fill: "rgba(255,255,255,.18)" }, rs); }
+  h("div", "position:absolute; left:0; right:0; top:300px; text-align:center; font-weight:800; line-height:.88; letter-spacing:-2px; color:var(--tinta)",
+    `<div style="font-size:138px">POR QUE ELE</div><div class="sombra" style="font-size:210px; color:var(--verm); text-shadow:8px 9px 0 var(--tinta)">NÃO VÊ?</div>`, k);
+  const card = h("div", "left:60px; top:720px; width:960px; height:620px", "", k, "cartao");
+  const BX = 430, BY = 470, RB = 60;
+  const j = jardim(card, 960, 620, { hz: 170, seed: 9, camadas: [430, BY + RB * 0.7], tufos: [[BX, BY + RB * 0.75, 12]], escLam: 1.1, escTufo: 0.75 });
+  svg("ellipse", { cx: BX, cy: BY + RB - 5, rx: RB, ry: 12, fill: "rgba(0,0,0,.25)" }, j.camadas[1]);
+  bola(j.camadas[1], RB, VERM).g.setAttribute("transform", `translate(${BX},${BY})`);
+  const cao = cachorro(j.camadas[0]);
+  const ov = svg("svg", { width: 960, height: 620, viewBox: "0 0 960 620" }, card); ov.style.cssText = "position:absolute; left:0; top:0";
+  const an = anel(ov, BX, BY, 92); an.setAttribute("opacity", 1);
+  anim((t) => { if (t >= 0) return; cao.pose({ t: 0, x: 720, y: 440, esc: 1.15, face: -1, cabeca: 20, pergunta: 1, olhar: 3, cauda: 10 }); });
+  const z = personagem(k, -30, 1010, 720, [[-10, "surpreso"]]);
+  h("div", "position:absolute; left:400px; top:1395px", `<span class="chip azul" style="font-size:46px; height:84px; padding:10px 34px 0 10px"><span class="av" style="width:66px; height:66px; margin-top:-8px; box-shadow:0 0 0 4px var(--fundo)">${avatar(66)}</span>${nomeMarca()}</span>`, k);
+  T.capaZe = z;
+}
+
+// ======================================================================= iniciar e desenhar
+async function iniciar(tl) {
+  TL = tl; DADOS = tl.dados || {}; TL.cenas.forEach((c) => { C[c.cena] = c; });
+  try { await Promise.all(["800 40px 'Baloo 2'", "700 40px 'Baloo 2'"].map((f) => document.fonts.load(f))); } catch (e) { }
+  await document.fonts.ready;
+  if (!document.fonts.check("800 40px 'Baloo 2'")) console.warn("fonte não carregou: Baloo 2");
+  montarFundo();
+  document.getElementById("marcaAv").innerHTML = avatar(64); document.getElementById("marcaNome").textContent = nomeMarca();
+  const pai = document.getElementById("cenas");
+  TL.cenas.forEach((c, i) => { const raiz = h("div", "", "", pai, "cena"); MONTA[c.cena](raiz, c);
+    const tIn = i === 0 ? -10 : c.ini - 0.28; CENAS.push({ c, raiz, tIn }); if (i > 0) som(tIn, "whoosh", { dur: 0.4, vol: 0.24 }); });
+  CENAS.forEach((k, i) => { k.tOut = CENAS[i + 1] ? CENAS[i + 1].tIn : 1e9; });
+  const ult = TL.cenas[TL.cenas.length - 1]; T.fim = ult.ini + ult.dur + 0.35;
+  montarLegendas(); montarFim(); montarCapa();
+  som(T.fim + 0.15, "whoosh", { dur: 0.45, vol: 0.3 }); som(T.fim + 0.55, "plim", { nota: 84, vol: 0.4 }); som(T.fim + 0.75, "plim", { nota: 91, vol: 0.4 });
+  await Promise.all([...document.images].map((im) => im.decode().catch(() => console.warn("imagem não carregou: " + im.src))));
+  EVENTOS.sort((a, b) => a.t - b.t);
+  await render(0);
+  return EVENTOS;
+}
+
+async function render(t) {
+  const capa = t < 0;
+  document.getElementById("capa").style.display = capa ? "block" : "none";
+  ["cenas", "leg", "fim", "marca"].forEach((id) => { document.getElementById(id).style.display = capa ? "none" : ""; });
+  T.raios.setAttribute("transform", `rotate(${(t * 3.5).toFixed(2)} 540 900)`);
+  T.pontos.style.transform = `translate(${(frac(t * 0.3) * 34).toFixed(1)}px, ${(frac(t * 0.2) * 34).toFixed(1)}px)`;
+  const qf = clamp((t - T.fim) / 0.45);
+  CENAS.forEach((k, i) => {
+    const ultima = i === CENAS.length - 1;
+    const pe = k.tIn < 0 ? 1 : clamp((t - k.tIn) / 0.45), px = ultima ? qf : clamp((t - k.tOut) / 0.34);
+    if (capa || pe <= 0 || px >= 1) { k.raiz.style.visibility = "hidden"; return; }
+    k.raiz.style.visibility = "visible";
+    const ee = easeOut(pe), ex = easeIO(px);
+    const kb = 1 + 0.03 * clamp((t - Math.max(0, k.tIn)) / Math.max(3, k.c.dur + 1));      // câmera sempre andando
+    k.raiz.style.opacity = (Math.min(1, pe * 1.6) * (1 - ex)).toFixed(3);
+    k.raiz.style.transform = `translate(${(6 * Math.sin(t * 0.6 + i) - 90 * ex).toFixed(2)}px, ${(70 * (1 - ee)).toFixed(1)}px) scale(${(kb * (0.96 + 0.04 * ee)).toFixed(4)})`;
+    const b = 9 * (1 - ee) + 8 * ex; k.raiz.style.filter = b > 0.2 ? `blur(${b.toFixed(2)}px)` : "none";
+  });
+  for (const f of A) f(t);
+  T.marca.style.opacity = (1 - qf).toFixed(3);
+  T.marca.style.transform = `translateY(${(3 * Math.sin(t * 1.3)).toFixed(1)}px)`;
+  LEG.forEach((b) => { if (t < b.ini || t >= b.fim || t >= T.fim) { b.g.style.opacity = 0; return; }
+    b.g.style.opacity = 1; b.cx.style.transform = `scale(${(0.88 + 0.12 * volta(clamp((t - b.ini) / 0.22))).toFixed(3)})`;
+    let ativa = -1; b.spans.forEach((s, i) => { if (s.w.t <= t + 0.03) ativa = i; });
+    b.spans.forEach((s, i) => { const q = clamp((t - s.w.t + 0.03) / 0.12); s.sp.style.opacity = (0.45 + 0.55 * q).toFixed(3);
+      s.sp.classList.toggle("agora", i === ativa && !s.cor); s.sp.style.transform = i === ativa ? "scale(1.04)" : ""; }); });
+  const f = document.getElementById("fim"); f.style.opacity = qf.toFixed(3);
+  T.fimBlocos.forEach((b, i) => { const q = easeOut(clamp((t - T.fim - 0.1 - i * 0.12) / 0.45)); b.style.opacity = q.toFixed(3);
+    b.style.transform = `translate(${(4 * Math.sin(t * 0.8 + i)).toFixed(2)}px, ${(34 * (1 - q) + 4 * Math.sin(t * 1.2 + i)).toFixed(2)}px)`; });
+  T.persFim.caixa.style.transform = `translateX(${(180 * (1 - easeOut(clamp((t - T.fim - 0.2) / 0.5)))).toFixed(1)}px)`;
+}
+</script>
+</body>
+</html>

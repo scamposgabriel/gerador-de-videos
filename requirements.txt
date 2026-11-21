@@ -1,0 +1,4 @@
+# versões testadas em 21/11/2026 (Python 3.14.6, Windows 11, Microsoft Edge 158, ffmpeg 9.0.2): com elas o resultado sai igual
+playwright==1.62.0
+edge-tts==7.3.1
+numpy==2.5.2

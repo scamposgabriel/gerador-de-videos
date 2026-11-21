@@ -1,0 +1,16 @@
+# gerado pelo motor (refeito a cada gravação)
+videos/*/saida/
+videos/*/falas/
+# clipes de banco de imagens (a licença não permite redistribuir; links em midia/CREDITOS.md)
+videos/*/midia/*
+!videos/*/midia/CREDITOS.md
+# pesquisas do YouTube de cada pessoa
+pesquisas/
+# bibliotecas locais (instale com: py -m pip install -r requirements.txt)
+motor/pylib/
+__pycache__/
+*.pyc
+# segredos nunca entram aqui
+.env
+*.env
+.secrets/
