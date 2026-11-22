@@ -15,6 +15,8 @@ Responda em português. O roteiro é para **ouvir e ver**, não para ler: frases
 - **Restrições**: marca, regras do setor (ex.: consórcio não pode prometer prazo), o que não pode aparecer.
 
 Se o usuário quiser saber o que está funcionando, use antes a skill `pesquisa-viral` e parta dos padrões encontrados.
+Se houver um `CREATIVE_INTELLIGENCE_BRIEF.md` (skill `engenharia-reversa`), use as técnicas transferíveis e os 3 ganchos
+originais dele, respeite a lista "não copiar" e trate as hipóteses como hipóteses (não como garantia).
 **Nunca copie** roteiro, título ou estrutura cena a cena de outro criador: use o padrão (o tipo de pergunta, o ritmo) com
 conteúdo, ângulo e personagem próprios.
 

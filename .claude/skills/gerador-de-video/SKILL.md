@@ -24,6 +24,10 @@ ou `docs/01` e `docs/02` (tutorial), e `docs/03_QUALIDADE_E_CHECKLIST.md`.
 7. **Capa**: `py ferramentas/capa.py videos/<pasta>` → `saida/Capa.png`.
 8. **Textos**: `py ferramentas/verificar_textos.py videos/<pasta>` (texto cortado, fora da tela ou embaixo dos botões do Instagram).
 9. **Entregue** os caminhos dos arquivos e diga o que a pessoa precisa conferir **ouvindo** (você não ouve áudio). Nunca publique.
+10. **Pré-publicação (opcional, depois do QA aprovado)**: QA editorial por dimensão (`py creative-intelligence/ci.py avaliacao modelo ...`),
+    comparação de ganchos entre versões (`ci comparar`) e avaliação preditiva (Higgsfield) só com aprovação de custo e
+    autorização do dono do material (`ci prever ... --modelo-autorizacao`). Ver skill `engenharia-reversa`, seção 5.
+    Não é obrigatório para gravar nem para tutoriais; o motor não depende disso.
 
 Folha de quadros (a cada 2 s): `ffmpeg -i saida/<video>.mp4 -vf "fps=1/2,scale=240:427,tile=9x3" -frames:v 1 folha.png`.
 

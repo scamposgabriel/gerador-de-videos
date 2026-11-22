@@ -1,0 +1,17 @@
+{
+ "contrato": "referencia",
+ "id": "poc01-sintetico",
+ "plataforma": "outro",
+ "url": "gerado localmente por exemplos/poc01-sintetico/gerar_video.py",
+ "criador": "vídeo sintético (geradores do FFmpeg)",
+ "tema": "demonstração do fluxo de engenharia reversa",
+ "titulo": "POC 01 — vídeo sintético de 12 s",
+ "coletado_em": "2026-11-22",
+ "publicado_em": null,
+ "duracao_s": 12.0,
+ "metricas": {},
+ "acesso_ao_video": "arquivo_local",
+ "arquivo_video": "poc01_sintetico.mp4",
+ "direitos_do_arquivo": "gerado por nós a partir de geradores do FFmpeg; sem material de terceiros",
+ "observacoes": "Não foi publicado: não existe nenhuma métrica de desempenho. Serve só para provar o fluxo técnico e o formato do brief."
+}

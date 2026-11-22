@@ -1,0 +1,40 @@
+{
+ "contrato": "observacoes_editoriais",
+ "referencia_id": "poc01-sintetico",
+ "analista": "Claude Code (assistindo aos quadros de referência e às medidas)",
+ "abertura": {
+  "primeira_imagem": {"texto": "fractal colorido ocupando a tela inteira, já em movimento", "tipo": "fato_observado", "evidencia": "quadros 0,0 s e 1,0 s", "intervalo": [0.0, 2.0]},
+  "primeira_fala": {"texto": "não há fala: um tom modulado imita o ritmo de sílabas desde 0 s", "tipo": "fato_observado", "evidencia": "primeiro som em 0,0 s; 22 ataques sonoros", "intervalo": [0.0, 2.0]},
+  "promessa_ou_pergunta": {"texto": "nenhuma promessa ou pergunta explícita (vídeo sem texto e sem narração)", "tipo": "fato_observado", "evidencia": "nenhum texto nos quadros"},
+  "elemento_curiosidade": {"texto": "apenas a forma incomum do fractal; sem pergunta, a curiosidade dependeria só da imagem", "tipo": "hipotese", "evidencia": "quadros 0,0 s e 1,0 s"},
+  "tempo_ate_assunto_s": null
+ },
+ "desenvolvimento": {
+  "ritmo": {"texto": "planos de 2, 3, 4 e 3 s (média 3 s): troca de imagem regular, sem aceleração", "tipo": "metrica_verificada", "evidencia": "cortes em 2,0 / 5,0 / 9,0 s", "intervalo": [0.0, 12.0]},
+  "progressao": {"texto": "não há progressão de sentido: cada plano é um padrão diferente sem ligação com o anterior", "tipo": "fato_observado", "evidencia": "fractal → ruído → barras de cor → laranja"},
+  "revelacoes": [{"texto": "a única 'virada' perceptível é a pausa sonora antes do último plano", "tipo": "fato_observado", "evidencia": "pausa de 7,9 a 8,6 s", "intervalo": [7.9, 8.6]}],
+  "mudancas_visuais": {"texto": "mudança forte de paleta a cada corte (fractal saturado → cinza → barras primárias → laranja)", "tipo": "fato_observado", "evidencia": "matizes por seção na análise técnica", "intervalo": [2.0, 9.0]}
+ },
+ "conclusao": {
+  "resolucao": {"texto": "não há pergunta a resolver", "tipo": "fato_observado", "evidencia": "sem narração nem texto"},
+  "recompensa": {"texto": "nenhuma recompensa de informação; só o bipe final", "tipo": "fato_observado", "evidencia": "bipe a partir de 11,5 s", "intervalo": [11.5, 12.0]},
+  "encerramento": {"texto": "tela laranja que escurece até quase preto", "tipo": "fato_observado", "evidencia": "quadros 9,1 s e 11,8 s", "intervalo": [9.0, 12.0]}
+ },
+ "estilo_visual": {"texto": "cores saturadas e tela cheia, sem texto nem personagem", "tipo": "fato_observado", "evidencia": "saturação média 0,68; laranja dominante no total"},
+ "animacao": [{"texto": "zoom contínuo do fractal e células que se multiplicam: movimento constante, mas sem função explicativa", "tipo": "fato_observado", "evidencia": "movimento médio baixo (4,6) com picos nos cortes", "intervalo": [0.0, 5.0]}],
+ "audio": {"texto": "tom contínuo com modulação de 4 Hz (ritmo de fala) e uma pausa de 0,7 s antes do último plano", "tipo": "metrica_verificada", "evidencia": "intensidade média −16,7 dBFS; pausa 7,9–8,6 s"},
+ "tecnicas_transferiveis": ["imagem em movimento já no primeiro quadro, ocupando a tela inteira",
+                            "pausa sonora curta antes da mudança final, para marcar a virada"],
+ "nao_copiar": ["nada a proteger aqui (material sintético nosso); numa referência real, liste personagem, bordão, arte e frases do criador"],
+ "hipoteses": [{"hipotese": "sem pergunta nem texto no início, a imagem sozinha não segura quem assiste", "base": "abertura sem promessa explícita; não há métricas para confirmar", "confianca": "baixa"}],
+ "recomendacoes": {
+  "ganchos": ["Mostrar o fenômeno em movimento no 1º quadro e perguntar, em até 2 s, o que ele tem de estranho",
+              "Começar pela consequência surpreendente e voltar para explicar a causa",
+              "Fazer uma afirmação que parece errada e prometer a prova visual em seguida"],
+  "progressao": ["cada plano responde a uma pergunta deixada pelo anterior", "uma revelação principal no meio, marcada por pausa sonora"],
+  "demonstracoes": ["comparação lado a lado ou antes/depois no mesmo enquadramento", "zoom no detalhe que prova a explicação"],
+  "ritmo": ["manter troca de imagem a cada 2–4 s, mas com sentido", "usar a pausa de 0,5–0,8 s como respiro antes da revelação"],
+  "riscos_originalidade": ["copiar a sequência exata de planos de uma referência real", "reproduzir paleta e estilo de abertura de um canal específico"],
+  "estrategia": "Usar só os mecanismos (movimento imediato + pergunta concreta + pausa antes da revelação) com tema, roteiro, arte e personagem próprios."
+ }
+}

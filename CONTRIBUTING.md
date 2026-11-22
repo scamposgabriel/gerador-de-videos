@@ -12,6 +12,7 @@ Obrigado por ajudar! Tudo em português (código comentado, textos e mensagens d
    py ferramentas/verificar_textos.py videos/exemplo-bolinha-vermelha
    ```
    O `saida/controle_de_qualidade.json` tem que dizer **APROVADO**. Olhe as fotos: o resultado tem que continuar igual (ou melhor).
+   Mudou algo em `creative-intelligence/`? Rode também `py -m pytest creative-intelligence/tests` (vídeos sintéticos, sem rede).
 4. Abra o pull request dizendo **o que mudou** e **como validar** (comandos e o que olhar).
 
 ## Regras do código

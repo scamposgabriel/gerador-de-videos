@@ -47,7 +47,8 @@ O vidIQ não tem uma API aberta para usar aqui. Se o usuário tem vidIQ (extens�
    - **5 a 10 ideias originais**, cada uma com: título proposto, gancho de 1 frase, por que deve funcionar (qual padrão),
      formato sugerido e o que o vídeo mostraria;
    - limites da pesquisa (amostra, período, views ≠ retenção).
-5. Ofereça passar a melhor ideia para a skill `roteirista`.
+5. Para dissecar 1 a 3 referências de verdade (gancho, mapa temporal, ritmo, o que não copiar), passe para a skill
+   `engenharia-reversa` (gera o `CREATIVE_INTELLIGENCE_BRIEF`). Depois, a melhor ideia vai para a skill `roteirista`.
 
 ## Não faça
 - Baixar vídeos de outros canais ou entrar logado em redes sociais por automação (viola os termos das plataformas).

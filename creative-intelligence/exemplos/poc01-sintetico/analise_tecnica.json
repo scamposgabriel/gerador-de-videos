@@ -1,0 +1,251 @@
+{
+ "contrato": "analise_tecnica",
+ "versao_biblioteca": "1.0.0",
+ "gerado_em": "2026-11-22T00:04:47-03:00",
+ "arquivo": "poc01_sintetico.mp4",
+ "sha256": "f7fea9ca987689f45df036d5ce61baa5e34dc2600f8788dc5a13b1b4ee97c701",
+ "janela": {
+  "inicio_s": 0.0,
+  "duracao_s": 12.0,
+  "video_inteiro": true
+ },
+ "metadados": {
+  "arquivo": "poc01_sintetico.mp4",
+  "duracao_s": 12.0,
+  "largura": 1080,
+  "altura": 1920,
+  "fps": 30.0,
+  "codec_video": "h264",
+  "pix_fmt": "yuv420p",
+  "tem_audio": true,
+  "codec_audio": "aac",
+  "taxa_audio_hz": 48000,
+  "canais": 1,
+  "bitrate_kbps": 36733,
+  "tamanho_bytes": 55099132,
+  "faltando": []
+ },
+ "cortes": [
+  {
+   "t": 2.0,
+   "intensidade": 86.7
+  },
+  {
+   "t": 5.0,
+   "intensidade": 122.6
+  },
+  {
+   "t": 9.0,
+   "intensidade": 123.4
+  }
+ ],
+ "planos": {
+  "quantidade": 4,
+  "duracoes_s": [
+   2.0,
+   3.0,
+   4.0,
+   3.0
+  ],
+  "media_s": 3.0,
+  "mediana_s": 3.0,
+  "mais_longo_s": 4.0,
+  "primeiro_corte_s": 2.0,
+  "cortes_por_minuto": 15.0
+ },
+ "visual": {
+  "diferenca_por_segundo": [
+   6.11,
+   6.39,
+   14.82,
+   5.36,
+   4.68,
+   13.92,
+   1.98,
+   2.47,
+   5.54,
+   12.34,
+   0.0,
+   13.13
+  ],
+  "mudancas_relevantes": 4,
+  "mudancas_relevantes_por_minuto": 20.0,
+  "movimento_medio": 4.56,
+  "movimento_nivel": "baixo"
+ },
+ "cor": {
+  "brilho_medio": 0.435,
+  "contraste_medio": 0.124,
+  "saturacao_media": 0.677,
+  "matizes_dominantes": [
+   {
+    "matiz": "laranja",
+    "peso": 0.38
+   },
+   {
+    "matiz": "vermelho",
+    "peso": 0.088
+   },
+   {
+    "matiz": "amarelo",
+    "peso": 0.084
+   }
+  ]
+ },
+ "audio": {
+  "tem_audio": true,
+  "decodificado": true,
+  "primeiro_som_s": 0.0,
+  "intensidade_media_dbfs": -16.7,
+  "variacao_db": 4.9,
+  "pico_janela_dbfs": -7.3,
+  "pausas": [
+   {
+    "de": 7.9,
+    "ate": 8.6,
+    "duracao_s": 0.7
+   }
+  ],
+  "pausas_total_s": 0.7,
+  "ataques": 22,
+  "ataques_por_minuto": 110.0,
+  "dbfs_por_segundo": [
+   -15.2,
+   -15.2,
+   -15.2,
+   -15.2,
+   -15.2,
+   -15.2,
+   -15.2,
+   -15.3,
+   -20.5,
+   -15.2,
+   -15.2,
+   -10.3
+  ]
+ },
+ "secoes": {
+  "abertura": {
+   "de_s": 0.0,
+   "ate_s": 3.0,
+   "cortes": 1,
+   "cortes_por_minuto": 20.0,
+   "diferenca_media": 9.21,
+   "brilho": 0.399,
+   "contraste": 0.131,
+   "saturacao": 0.44,
+   "matizes": [
+    {
+     "matiz": "lima",
+     "peso": 0.25
+    },
+    {
+     "matiz": "violeta",
+     "peso": 0.143
+    },
+    {
+     "matiz": "verde",
+     "peso": 0.139
+    }
+   ],
+   "audio_dbfs_medio": -15.2,
+   "pausas": 0
+  },
+  "desenvolvimento": {
+   "de_s": 3.0,
+   "ate_s": 9.0,
+   "cortes": 1,
+   "cortes_por_minuto": 10.0,
+   "diferenca_media": 5.66,
+   "brilho": 0.367,
+   "contraste": 0.182,
+   "saturacao": 0.634,
+   "matizes": [
+    {
+     "matiz": "azul",
+     "peso": 0.158
+    },
+    {
+     "matiz": "vermelho",
+     "peso": 0.158
+    },
+    {
+     "matiz": "amarelo",
+     "peso": 0.156
+    }
+   ],
+   "audio_dbfs_medio": -16.1,
+   "pausas": 1
+  },
+  "conclusao": {
+   "de_s": 9.0,
+   "ate_s": 12.0,
+   "cortes": 1,
+   "cortes_por_minuto": 20.0,
+   "diferenca_media": 8.49,
+   "brilho": 0.608,
+   "contraste": 0.0,
+   "saturacao": 1.0,
+   "matizes": [
+    {
+     "matiz": "laranja",
+     "peso": 1.0
+    }
+   ],
+   "audio_dbfs_medio": -13.6,
+   "pausas": 0
+  }
+ },
+ "quadros_referencia": [
+  {
+   "t": 0.0,
+   "arquivo": "quadro_0000.00.png"
+  },
+  {
+   "t": 1.0,
+   "arquivo": "quadro_0001.00.png"
+  },
+  {
+   "t": 2.1,
+   "arquivo": "quadro_0002.10.png"
+  },
+  {
+   "t": 3.0,
+   "arquivo": "quadro_0003.00.png"
+  },
+  {
+   "t": 5.1,
+   "arquivo": "quadro_0005.10.png"
+  },
+  {
+   "t": 6.0,
+   "arquivo": "quadro_0006.00.png"
+  },
+  {
+   "t": 9.1,
+   "arquivo": "quadro_0009.10.png"
+  },
+  {
+   "t": 11.8,
+   "arquivo": "quadro_0011.80.png"
+  }
+ ],
+ "parametros": {
+  "fps_analise": 10.0,
+  "largura_analise": 64,
+  "corte_limiar_abs": 25.0,
+  "corte_fator_vizinhanca": 3.0,
+  "corte_intervalo_min_s": 0.3,
+  "mudanca_relevante_limiar": 10.0,
+  "cor_a_cada_s": 0.5,
+  "silencio_dbfs": -45.0,
+  "som_dbfs": -40.0,
+  "pausa_min_s": 0.3,
+  "ataque_db": 12.0
+ },
+ "aviso": "Medidas visuais e sonoras do arquivo. NÃO são métricas de retenção nem de desempenho na plataforma, e não provam o que causou o resultado de um vídeo.",
+ "limitacoes": [
+  "cortes detectados por diferença entre quadros: transições graduais (fusões) podem não contar como corte",
+  "movimento e cor medidos em quadros reduzidos (64 px de largura) — valores aproximados"
+ ]
+}
