@@ -5,11 +5,12 @@ trilha e efeitos — só pedindo para o Claude Code. Sem programa de edição, s
 
 > "Pesquisa os vídeos mais vistos sobre curiosidades de cachorro, escolhe uma ideia, escreve o roteiro e faz o vídeo."
 
-São três skills que trabalham juntas:
+São quatro skills que trabalham juntas:
 
 | Skill | O que faz |
 |---|---|
 | **pesquisa-viral** | busca os vídeos mais vistos do YouTube por tema ou canal (API oficial) e mostra quais ficaram "fora da curva" |
+| **engenharia-reversa** | disseca vídeos de alto desempenho (gancho, mapa temporal, ritmo, o que não copiar) e entrega um *Creative Intelligence Brief*; compara ganchos e prepara a avaliação preditiva opcional |
 | **roteirista** | escreve o roteiro com gancho, storyboard cena a cena, título, texto da capa e legenda do post |
 | **gerador-de-video** | grava o vídeo 1080 × 1920 (e a versão sem música), a capa e confere a qualidade |
 
@@ -85,23 +86,36 @@ A skill `pesquisa-viral` usa a **YouTube Data API v3**. Crie a chave em [console
 `YOUTUBE_API_KEY=sua_chave`. Passo a passo e limites diários em `.claude/skills/pesquisa-viral/SKILL.md`.
 Nunca coloque a chave dentro do repositório.
 
-## 6. Pastas
+## 6. Creative Intelligence (opcional)
+Biblioteca em `creative-intelligence/` (só Python padrão + ffmpeg; nada a instalar): engenharia reversa técnica e editorial,
+*brief* para o roteirista, comparação A/B de ganchos, QA editorial, registro de experimentos com métricas reais e integração
+**opcional** com o Virality Predictor da Higgsfield (nada é enviado sem autorização e orçamento). O motor não depende dela.
+```
+py creative-intelligence/ci.py verificar
+py creative-intelligence/ci.py analisar videos/<pasta>/saida/<video>.mp4 --saida pesquisas/ci/<nome>
+```
+Guia: `docs/05_CREATIVE_INTELLIGENCE.md`. Testes: `py -m pip install pytest` e `py -m pytest creative-intelligence/tests`.
+
+## 7. Pastas
 
 | Pasta | O que tem |
 |---|---|
-| `.claude/skills/` | as três skills (`pesquisa-viral`, `roteirista`, `gerador-de-video`) |
+| `.claude/skills/` | as quatro skills (`pesquisa-viral`, `engenharia-reversa`, `roteirista`, `gerador-de-video`) |
+| `creative-intelligence/` | biblioteca de engenharia reversa e pré-publicação (com testes e exemplos sintéticos) |
 | `motor/` | `animar.py` (Reels), `gravar.py` (tutorial), `camada.js`, `vozes.py` (narração), `trilha.py` (música e efeitos), `qa.py` |
 | `ferramentas/` | `capa.py`, `verificar_textos.py`, `pesquisa_youtube.py` |
 | `videos/` | um vídeo por pasta; `exemplo-bolinha-vermelha` é o modelo |
-| `docs/` | guias: tutorial, ações, qualidade, modo animado |
+| `docs/` | guias: tutorial, ações, qualidade, modo animado, Creative Intelligence |
 | `modelos/` | roteiro de tutorial comentado |
 | `vozes/` | catálogo de vozes testadas |
 
-## 7. Cuidados
+## 8. Cuidados
 - A narração usa o Edge TTS pela biblioteca `edge-tts`, que **não é uma API oficial** da Microsoft e pode mudar sem aviso.
   O texto falado vai para esse serviço: nunca ponha dado de cliente ou de outra pessoa na fala.
 - Simulações e personagens fictícios vão rotulados na tela.
 - Clipes de banco de imagens não vêm no repositório; use só os de licença que permita o seu uso.
+- Engenharia reversa: só analise arquivos que você tem direito de usar; nunca baixe nem suba vídeos de outros criadores.
+  Avaliação preditiva externa (Higgsfield) envia o clipe para fora e gasta créditos: só com a sua autorização.
 
 ## Colaborar
 Ver [`CONTRIBUTING.md`](CONTRIBUTING.md).

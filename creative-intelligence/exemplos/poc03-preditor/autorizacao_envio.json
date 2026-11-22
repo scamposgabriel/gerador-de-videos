@@ -1,0 +1,17 @@
+{
+ "contrato": "autorizacao_envio",
+ "arquivo_sha256": "dc80582286f227e9946f881ccc51e0b580b2a9a010bec012bb04d50f221ea46f",
+ "provedor": "higgsfield",
+ "finalidade": "avaliar o gancho antes de publicar",
+ "classificacao": "privado",
+ "direitos_confirmados": false,
+ "envio_externo_permitido": false,
+ "contem_dados_pessoais": true,
+ "autorizacao_cliente": null,
+ "orcamento_maximo_creditos": null,
+ "aceita_custo_nao_estimado": false,
+ "aprovado_por": "PREENCHER",
+ "aprovado_em": "PREENCHER (AAAA-MM-DD)",
+ "valido_ate": null,
+ "arquivo_nome": "clipe_poc01_sintetico_0s_12s.mp4"
+}

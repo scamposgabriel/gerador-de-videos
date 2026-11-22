@@ -1,0 +1,7 @@
+# vídeos e quadros gerados nos exemplos (refeitos pelo script; nunca vídeos de terceiros aqui)
+exemplos/**/*.mp4
+exemplos/**/quadros/
+# saídas de análises locais
+ci_saida/
+*.egg-info/
+build/

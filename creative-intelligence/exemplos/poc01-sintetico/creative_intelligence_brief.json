@@ -1,0 +1,499 @@
+{
+ "contrato": "creative_intelligence_brief",
+ "versao_biblioteca": "1.0.0",
+ "gerado_em": "2026-11-22T00:05:53-03:00",
+ "referencia": {
+  "id": "poc01-sintetico",
+  "plataforma": "outro",
+  "url": "gerado localmente por exemplos/poc01-sintetico/gerar_video.py",
+  "criador": "vídeo sintético (geradores do FFmpeg)",
+  "tema": "demonstração do fluxo de engenharia reversa",
+  "titulo": "POC 01 — vídeo sintético de 12 s",
+  "coletado_em": "2026-11-22",
+  "publicado_em": null,
+  "duracao_s": 12.0,
+  "acesso_ao_video": "arquivo_local"
+ },
+ "duracao_s": 12.0,
+ "metricas": {},
+ "fontes_metricas": [],
+ "gancho_inicial": {
+  "primeira_imagem": {
+   "texto": "fractal colorido ocupando a tela inteira, já em movimento",
+   "tipo": "fato_observado",
+   "evidencia": "quadros 0,0 s e 1,0 s",
+   "intervalo": [
+    0.0,
+    2.0
+   ]
+  },
+  "primeira_fala": {
+   "texto": "não há fala: um tom modulado imita o ritmo de sílabas desde 0 s",
+   "tipo": "fato_observado",
+   "evidencia": "primeiro som em 0,0 s; 22 ataques sonoros",
+   "intervalo": [
+    0.0,
+    2.0
+   ]
+  },
+  "promessa_ou_pergunta": {
+   "texto": "nenhuma promessa ou pergunta explícita (vídeo sem texto e sem narração)",
+   "tipo": "fato_observado",
+   "evidencia": "nenhum texto nos quadros"
+  },
+  "elemento_curiosidade": {
+   "texto": "apenas a forma incomum do fractal; sem pergunta, a curiosidade dependeria só da imagem",
+   "tipo": "hipotese",
+   "evidencia": "quadros 0,0 s e 1,0 s"
+  },
+  "tempo_ate_assunto_s": null,
+  "tecnico_abertura": {
+   "de_s": 0.0,
+   "ate_s": 3.0,
+   "cortes": 1,
+   "cortes_por_minuto": 20.0,
+   "diferenca_media": 9.21,
+   "brilho": 0.399,
+   "contraste": 0.131,
+   "saturacao": 0.44,
+   "matizes": [
+    {
+     "matiz": "lima",
+     "peso": 0.25
+    },
+    {
+     "matiz": "violeta",
+     "peso": 0.143
+    },
+    {
+     "matiz": "verde",
+     "peso": 0.139
+    }
+   ],
+   "audio_dbfs_medio": -15.2,
+   "pausas": 0
+  }
+ },
+ "mapa_temporal": [
+  {
+   "secao": "abertura",
+   "de_s": 0.0,
+   "ate_s": 3.0,
+   "tecnico": {
+    "de_s": 0.0,
+    "ate_s": 3.0,
+    "cortes": 1,
+    "cortes_por_minuto": 20.0,
+    "diferenca_media": 9.21,
+    "brilho": 0.399,
+    "contraste": 0.131,
+    "saturacao": 0.44,
+    "matizes": [
+     {
+      "matiz": "lima",
+      "peso": 0.25
+     },
+     {
+      "matiz": "violeta",
+      "peso": 0.143
+     },
+     {
+      "matiz": "verde",
+      "peso": 0.139
+     }
+    ],
+    "audio_dbfs_medio": -15.2,
+    "pausas": 0
+   },
+   "observacoes": [
+    {
+     "texto": "fractal colorido ocupando a tela inteira, já em movimento",
+     "tipo": "fato_observado",
+     "evidencia": "quadros 0,0 s e 1,0 s",
+     "intervalo": [
+      0.0,
+      2.0
+     ],
+     "rotulo": "primeira_imagem"
+    },
+    {
+     "texto": "não há fala: um tom modulado imita o ritmo de sílabas desde 0 s",
+     "tipo": "fato_observado",
+     "evidencia": "primeiro som em 0,0 s; 22 ataques sonoros",
+     "intervalo": [
+      0.0,
+      2.0
+     ],
+     "rotulo": "primeira_fala"
+    },
+    {
+     "texto": "planos de 2, 3, 4 e 3 s (média 3 s): troca de imagem regular, sem aceleração",
+     "tipo": "metrica_verificada",
+     "evidencia": "cortes em 2,0 / 5,0 / 9,0 s",
+     "intervalo": [
+      0.0,
+      12.0
+     ],
+     "rotulo": "ritmo"
+    },
+    {
+     "texto": "zoom contínuo do fractal e células que se multiplicam: movimento constante, mas sem função explicativa",
+     "tipo": "fato_observado",
+     "evidencia": "movimento médio baixo (4,6) com picos nos cortes",
+     "intervalo": [
+      0.0,
+      5.0
+     ],
+     "rotulo": "animacao"
+    },
+    {
+     "texto": "mudança forte de paleta a cada corte (fractal saturado → cinza → barras primárias → laranja)",
+     "tipo": "fato_observado",
+     "evidencia": "matizes por seção na análise técnica",
+     "intervalo": [
+      2.0,
+      9.0
+     ],
+     "rotulo": "mudancas_visuais"
+    },
+    {
+     "texto": "nenhuma promessa ou pergunta explícita (vídeo sem texto e sem narração)",
+     "tipo": "fato_observado",
+     "evidencia": "nenhum texto nos quadros",
+     "rotulo": "promessa_ou_pergunta"
+    },
+    {
+     "texto": "apenas a forma incomum do fractal; sem pergunta, a curiosidade dependeria só da imagem",
+     "tipo": "hipotese",
+     "evidencia": "quadros 0,0 s e 1,0 s",
+     "rotulo": "elemento_curiosidade"
+    }
+   ]
+  },
+  {
+   "secao": "desenvolvimento",
+   "de_s": 3.0,
+   "ate_s": 9.0,
+   "tecnico": {
+    "de_s": 3.0,
+    "ate_s": 9.0,
+    "cortes": 1,
+    "cortes_por_minuto": 10.0,
+    "diferenca_media": 5.66,
+    "brilho": 0.367,
+    "contraste": 0.182,
+    "saturacao": 0.634,
+    "matizes": [
+     {
+      "matiz": "azul",
+      "peso": 0.158
+     },
+     {
+      "matiz": "vermelho",
+      "peso": 0.158
+     },
+     {
+      "matiz": "amarelo",
+      "peso": 0.156
+     }
+    ],
+    "audio_dbfs_medio": -16.1,
+    "pausas": 1
+   },
+   "observacoes": [
+    {
+     "texto": "a única 'virada' perceptível é a pausa sonora antes do último plano",
+     "tipo": "fato_observado",
+     "evidencia": "pausa de 7,9 a 8,6 s",
+     "intervalo": [
+      7.9,
+      8.6
+     ],
+     "rotulo": "revelacoes"
+    },
+    {
+     "texto": "não há progressão de sentido: cada plano é um padrão diferente sem ligação com o anterior",
+     "tipo": "fato_observado",
+     "evidencia": "fractal → ruído → barras de cor → laranja",
+     "rotulo": "progressao"
+    },
+    {
+     "texto": "cores saturadas e tela cheia, sem texto nem personagem",
+     "tipo": "fato_observado",
+     "evidencia": "saturação média 0,68; laranja dominante no total",
+     "rotulo": "estilo_visual"
+    },
+    {
+     "texto": "tom contínuo com modulação de 4 Hz (ritmo de fala) e uma pausa de 0,7 s antes do último plano",
+     "tipo": "metrica_verificada",
+     "evidencia": "intensidade média −16,7 dBFS; pausa 7,9–8,6 s",
+     "rotulo": "audio"
+    }
+   ]
+  },
+  {
+   "secao": "conclusao",
+   "de_s": 9.0,
+   "ate_s": 12.0,
+   "tecnico": {
+    "de_s": 9.0,
+    "ate_s": 12.0,
+    "cortes": 1,
+    "cortes_por_minuto": 20.0,
+    "diferenca_media": 8.49,
+    "brilho": 0.608,
+    "contraste": 0.0,
+    "saturacao": 1.0,
+    "matizes": [
+     {
+      "matiz": "laranja",
+      "peso": 1.0
+     }
+    ],
+    "audio_dbfs_medio": -13.6,
+    "pausas": 0
+   },
+   "observacoes": [
+    {
+     "texto": "tela laranja que escurece até quase preto",
+     "tipo": "fato_observado",
+     "evidencia": "quadros 9,1 s e 11,8 s",
+     "intervalo": [
+      9.0,
+      12.0
+     ],
+     "rotulo": "encerramento"
+    },
+    {
+     "texto": "nenhuma recompensa de informação; só o bipe final",
+     "tipo": "fato_observado",
+     "evidencia": "bipe a partir de 11,5 s",
+     "intervalo": [
+      11.5,
+      12.0
+     ],
+     "rotulo": "recompensa"
+    },
+    {
+     "texto": "não há pergunta a resolver",
+     "tipo": "fato_observado",
+     "evidencia": "sem narração nem texto",
+     "rotulo": "resolucao"
+    }
+   ]
+  }
+ ],
+ "estrutura_narrativa": {
+  "progressao": {
+   "texto": "não há progressão de sentido: cada plano é um padrão diferente sem ligação com o anterior",
+   "tipo": "fato_observado",
+   "evidencia": "fractal → ruído → barras de cor → laranja"
+  },
+  "revelacoes": [
+   {
+    "texto": "a única 'virada' perceptível é a pausa sonora antes do último plano",
+    "tipo": "fato_observado",
+    "evidencia": "pausa de 7,9 a 8,6 s",
+    "intervalo": [
+     7.9,
+     8.6
+    ]
+   }
+  ],
+  "resolucao": {
+   "texto": "não há pergunta a resolver",
+   "tipo": "fato_observado",
+   "evidencia": "sem narração nem texto"
+  },
+  "recompensa": {
+   "texto": "nenhuma recompensa de informação; só o bipe final",
+   "tipo": "fato_observado",
+   "evidencia": "bipe a partir de 11,5 s",
+   "intervalo": [
+    11.5,
+    12.0
+   ]
+  },
+  "encerramento": {
+   "texto": "tela laranja que escurece até quase preto",
+   "tipo": "fato_observado",
+   "evidencia": "quadros 9,1 s e 11,8 s",
+   "intervalo": [
+    9.0,
+    12.0
+   ]
+  },
+  "convite_interacao": null,
+  "repeticao_natural": null
+ },
+ "tecnicas_animacao": [
+  {
+   "texto": "zoom contínuo do fractal e células que se multiplicam: movimento constante, mas sem função explicativa",
+   "tipo": "fato_observado",
+   "evidencia": "movimento médio baixo (4,6) com picos nos cortes",
+   "intervalo": [
+    0.0,
+    5.0
+   ]
+  }
+ ],
+ "ritmo": {
+  "editorial": {
+   "texto": "planos de 2, 3, 4 e 3 s (média 3 s): troca de imagem regular, sem aceleração",
+   "tipo": "metrica_verificada",
+   "evidencia": "cortes em 2,0 / 5,0 / 9,0 s",
+   "intervalo": [
+    0.0,
+    12.0
+   ]
+  },
+  "tecnico": {
+   "planos": {
+    "quantidade": 4,
+    "duracoes_s": [
+     2.0,
+     3.0,
+     4.0,
+     3.0
+    ],
+    "media_s": 3.0,
+    "mediana_s": 3.0,
+    "mais_longo_s": 4.0,
+    "primeiro_corte_s": 2.0,
+    "cortes_por_minuto": 15.0
+   },
+   "mudancas_relevantes_por_minuto": 20.0,
+   "movimento_nivel": "baixo",
+   "ataques_sonoros_por_minuto": 110.0
+  }
+ },
+ "estilo_visual": {
+  "editorial": {
+   "texto": "cores saturadas e tela cheia, sem texto nem personagem",
+   "tipo": "fato_observado",
+   "evidencia": "saturação média 0,68; laranja dominante no total"
+  },
+  "tecnico": {
+   "brilho_medio": 0.435,
+   "contraste_medio": 0.124,
+   "saturacao_media": 0.677,
+   "matizes_dominantes": [
+    {
+     "matiz": "laranja",
+     "peso": 0.38
+    },
+    {
+     "matiz": "vermelho",
+     "peso": 0.088
+    },
+    {
+     "matiz": "amarelo",
+     "peso": 0.084
+    }
+   ]
+  }
+ },
+ "audio": {
+  "editorial": {
+   "texto": "tom contínuo com modulação de 4 Hz (ritmo de fala) e uma pausa de 0,7 s antes do último plano",
+   "tipo": "metrica_verificada",
+   "evidencia": "intensidade média −16,7 dBFS; pausa 7,9–8,6 s"
+  },
+  "tecnico": {
+   "tem_audio": true,
+   "decodificado": true,
+   "primeiro_som_s": 0.0,
+   "intensidade_media_dbfs": -16.7,
+   "variacao_db": 4.9,
+   "pico_janela_dbfs": -7.3,
+   "pausas": [
+    {
+     "de": 7.9,
+     "ate": 8.6,
+     "duracao_s": 0.7
+    }
+   ],
+   "pausas_total_s": 0.7,
+   "ataques": 22,
+   "ataques_por_minuto": 110.0,
+   "dbfs_por_segundo": [
+    -15.2,
+    -15.2,
+    -15.2,
+    -15.2,
+    -15.2,
+    -15.2,
+    -15.2,
+    -15.3,
+    -20.5,
+    -15.2,
+    -15.2,
+    -10.3
+   ]
+  }
+ },
+ "tecnicas_transferiveis": [
+  "imagem em movimento já no primeiro quadro, ocupando a tela inteira",
+  "pausa sonora curta antes da mudança final, para marcar a virada"
+ ],
+ "nao_copiar": [
+  "nada a proteger aqui (material sintético nosso); numa referência real, liste personagem, bordão, arte e frases do criador"
+ ],
+ "hipoteses": [
+  {
+   "hipotese": "sem pergunta nem texto no início, a imagem sozinha não segura quem assiste",
+   "base": "abertura sem promessa explícita; não há métricas para confirmar",
+   "confianca": "baixa"
+  }
+ ],
+ "aviso_hipoteses": "Hipóteses: o vídeo teve bom desempenho E tem estas características. Isso é correlação, não causa — views altas não provam que uma cor, corte ou frase específica produziu o resultado.",
+ "nivel_confianca": "baixa",
+ "motivos_confianca": [
+  "nenhuma métrica verificada em fonte oficial"
+ ],
+ "dados_indisponiveis": [
+  "métrica 'visualizacoes' não informada",
+  "métrica 'curtidas' não informada",
+  "métrica 'comentarios' não informada",
+  "métrica 'compartilhamentos' não informada",
+  "métrica 'outlier_score' não informada",
+  "métrica 'retencao_media_pct' não informada",
+  "abertura.tempo_ate_assunto_s não registrado na análise editorial",
+  "desenvolvimento.humor não registrado na análise editorial",
+  "desenvolvimento.comparacoes não registrado na análise editorial",
+  "desenvolvimento.suspense não registrado na análise editorial",
+  "conclusao.convite_interacao não registrado na análise editorial",
+  "conclusao.repeticao_natural não registrado na análise editorial",
+  "retenção real do vídeo de referência (só o dono do canal tem esse dado)"
+ ],
+ "recomendacoes_roteirista": {
+  "ganchos": [
+   "Mostrar o fenômeno em movimento no 1º quadro e perguntar, em até 2 s, o que ele tem de estranho",
+   "Começar pela consequência surpreendente e voltar para explicar a causa",
+   "Fazer uma afirmação que parece errada e prometer a prova visual em seguida"
+  ],
+  "progressao": [
+   "cada plano responde a uma pergunta deixada pelo anterior",
+   "uma revelação principal no meio, marcada por pausa sonora"
+  ],
+  "demonstracoes": [
+   "comparação lado a lado ou antes/depois no mesmo enquadramento",
+   "zoom no detalhe que prova a explicação"
+  ],
+  "ritmo": [
+   "manter troca de imagem a cada 2–4 s, mas com sentido",
+   "usar a pausa de 0,5–0,8 s como respiro antes da revelação"
+  ],
+  "riscos_originalidade": [
+   "copiar a sequência exata de planos de uma referência real",
+   "reproduzir paleta e estilo de abertura de um canal específico"
+  ],
+  "estrategia": "Usar só os mecanismos (movimento imediato + pergunta concreta + pausa antes da revelação) com tema, roteiro, arte e personagem próprios."
+ },
+ "limitacoes": [
+  "cortes detectados por diferença entre quadros: transições graduais (fusões) podem não contar como corte",
+  "movimento e cor medidos em quadros reduzidos (64 px de largura) — valores aproximados",
+  "observações editoriais são de quem assistiu; confira a evidência de cada uma"
+ ],
+ "aviso_tecnico": "Medidas visuais e sonoras do arquivo. NÃO são métricas de retenção nem de desempenho na plataforma, e não provam o que causou o resultado de um vídeo."
+}

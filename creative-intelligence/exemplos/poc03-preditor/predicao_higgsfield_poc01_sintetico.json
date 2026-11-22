@@ -1,0 +1,43 @@
+{
+ "contrato": "resultado_preditivo",
+ "projeto": "exemplo",
+ "video": "poc01_sintetico.mp4",
+ "versao": null,
+ "plataforma": null,
+ "provedor": "higgsfield",
+ "ferramenta": "Higgsfield Virality Predictor (CLI, job brain_activity)",
+ "simulado": false,
+ "data": "2026-11-22T00:06:07-03:00",
+ "janela": {
+  "inicio_s": 0.0,
+  "duracao_s": 12.0,
+  "duracao_total_s": 12.0,
+  "cobre_video_inteiro": true
+ },
+ "campos_retornados": {},
+ "url_relatorio": null,
+ "custo": null,
+ "limitacoes": [
+  "Pontuação de modelo preditivo: estimativa, não probabilidade demonstrada de viralização nem garantia de retenção. Não use como condição obrigatória para publicar; confronte com as métricas reais."
+ ],
+ "erro": null,
+ "checagens": {
+  "disponibilidade": {
+   "disponivel": false,
+   "detalhe": "CLI 'higgsfield' não instalada (ver docs: npm install -g @higgsfield/cli, ou brew/curl)"
+  },
+  "autenticacao": {
+   "autenticado": null,
+   "detalhe": "CLI 'higgsfield' não instalada (ver docs: npm install -g @higgsfield/cli, ou brew/curl)"
+  },
+  "creditos": {
+   "saldo": null,
+   "detalhe": "CLI 'higgsfield' não instalada (ver docs: npm install -g @higgsfield/cli, ou brew/curl)"
+  },
+  "custo_estimado": {
+   "estimado": null,
+   "detalhe": "CLI 'higgsfield' não instalada (ver docs: npm install -g @higgsfield/cli, ou brew/curl)"
+  }
+ },
+ "status": "preparado"
+}
